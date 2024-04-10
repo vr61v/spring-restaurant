@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Time;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -18,7 +18,7 @@ public class Restaurant {
     private String phone;
     private Time openingHoursFrom;
     private Time openingHoursTo;
-    private List<Product> menu;
+    private Set<Product> menu;
 
     public void addProductInMenu(Product product) {
         menu.add(product);
