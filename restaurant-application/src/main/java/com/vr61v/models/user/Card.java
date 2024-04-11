@@ -1,5 +1,6 @@
 package com.vr61v.models.user;
 
+import com.vr61v.models.user.types.CardType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

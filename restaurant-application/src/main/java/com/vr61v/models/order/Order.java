@@ -1,5 +1,6 @@
 package com.vr61v.models.order;
 
+import com.vr61v.models.order.types.OrderState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

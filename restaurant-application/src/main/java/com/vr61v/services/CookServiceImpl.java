@@ -4,7 +4,7 @@ import com.vr61v.exceptions.IllegalOrderStateChangeException;
 import com.vr61v.exceptions.NotFoundException;
 import com.vr61v.in.CookService;
 import com.vr61v.models.order.Order;
-import com.vr61v.models.order.OrderState;
+import com.vr61v.models.order.types.OrderState;
 import com.vr61v.out.order.Orders;
 import lombok.RequiredArgsConstructor;
 

@@ -1,7 +1,7 @@
 package com.vr61v.out.user;
 
 import com.vr61v.exceptions.NotFoundException;
-import com.vr61v.models.user.Role;
+import com.vr61v.models.user.types.Role;
 import com.vr61v.models.user.User;
 import com.vr61v.out.BasicRepository;
 

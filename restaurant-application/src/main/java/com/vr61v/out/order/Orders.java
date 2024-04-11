@@ -1,7 +1,7 @@
 package com.vr61v.out.order;
 
 import com.vr61v.models.order.Order;
-import com.vr61v.models.order.OrderState;
+import com.vr61v.models.order.types.OrderState;
 import com.vr61v.out.BasicRepository;
 
 import java.util.List;

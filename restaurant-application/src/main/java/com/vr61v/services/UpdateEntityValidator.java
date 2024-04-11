@@ -32,7 +32,7 @@ public class UpdateEntityValidator {
         return result;
     }
 
-    public static boolean validateProductUpdate(Product product, ProductCategory productCategory, Integer price, String name, Float weight, String description, String composition) {
+    public static boolean validateProductUpdate(Product product, ProductCategory productCategory, Integer price, String name, Integer weight, String description, String composition) {
         boolean result = true;
 
         if (name != null) result = !Objects.equals(product.getName(), name);

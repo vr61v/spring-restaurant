@@ -5,7 +5,7 @@ import com.vr61v.in.AdminService;
 import com.vr61v.models.product.Product;
 import com.vr61v.models.product.ProductCategory;
 import com.vr61v.models.restaurant.Restaurant;
-import com.vr61v.models.user.Role;
+import com.vr61v.models.user.types.Role;
 import com.vr61v.models.user.User;
 import com.vr61v.out.product.ProductCategories;
 import com.vr61v.out.product.Products;
@@ -137,7 +137,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Product updateProduct(UUID productId, UUID productCategoryId, Integer price, String name, Float weight, String composition, String description) throws NotFoundException {
+    public Product updateProduct(UUID productId, UUID productCategoryId, Integer price, String name, Integer weight, String composition, String description) throws NotFoundException {
         Product product = products.find(productId);
         ProductCategory productCategory = productCategories.find(productCategoryId);
         if (!UpdateEntityValidator.validateProductUpdate(product, productCategory, price, name, weight, description, composition)) {

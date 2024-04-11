@@ -23,7 +23,7 @@ public interface AdminService extends BasicUserService {
     Product createProduct(Product product);
     Product getProductById(UUID productId) throws NotFoundException;
     List<Product> getAllProducts();
-    Product updateProduct(UUID productId, UUID productCategoryId, Integer price, String name, Float weight, String composition, String description) throws NotFoundException;
+    Product updateProduct(UUID productId, UUID productCategoryId, Integer price, String name, Integer weight, String composition, String description) throws NotFoundException;
     UUID deleteProduct(UUID productId) throws NotFoundException;
 
     ProductCategory createProductCategory(ProductCategory productCategory);

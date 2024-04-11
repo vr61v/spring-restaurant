@@ -12,9 +12,9 @@ import java.util.UUID;
 public class Product {
     private UUID id;
     private ProductCategory productCategory;
-    private Integer price;
     private String name;
-    private Float weight;
+    private Integer price;
+    private Integer weight;
     private String composition;
     private String description;
 }

@@ -1,5 +1,7 @@
 package com.vr61v.models.user;
 
+import com.vr61v.models.user.types.Gender;
+import com.vr61v.models.user.types.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
