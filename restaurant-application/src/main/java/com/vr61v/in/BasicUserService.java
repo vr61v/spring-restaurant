@@ -8,6 +8,6 @@ import java.util.UUID;
 public interface BasicUserService {
     User createUser(User user);
     User getUserById(UUID userId) throws NotFoundException;
-    User updateUser(UUID userId, String name, String phone, String email, String password) throws NotFoundException;
+    User updateUser(UUID userId, String name, String phone, String email) throws NotFoundException;
     UUID deleteUser(UUID userId) throws NotFoundException;
 }

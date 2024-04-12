@@ -35,26 +35,27 @@ public class UserServiceImpl implements UserService {
     public User getUserById(UUID userId) throws NotFoundException {
         User find = users.find(userId);
         if (find.getRole() != Role.USER) {
-            throw new IllegalArgumentException("User can get only USER");
+            throw new IllegalArgumentException("User can get only USER.");
         }
         return find;
     }
 
     @Override
-    public User updateUser(UUID userId, String name, String phone, String email, String password) throws NotFoundException {
+    public User updateUser(UUID userId, String name, String phone, String email) throws NotFoundException {
         User update = users.find(userId);
         if (update.getRole() != Role.USER) {
-            throw new IllegalArgumentException("User can update only USER");
+            throw new IllegalArgumentException("User can update only USER.");
         }
 
-        if (!UpdateEntityValidator.validateUserUpdate(update, name, phone, email, password)) {
+        if (!UpdateEntityValidator.validateUserUpdate(update, name, phone, email)) {
             throw new IllegalArgumentException("The updated fields must be different from the existing ones.");
         }
 
         if (name != null) update.setName(name);
         if (phone != null) update.setPhone(phone);
         if (email != null) update.setEmail(email);
-        if (password != null) update.setPassword(password);
+
+        users.save(update);
 
         return update;
     }
@@ -62,22 +63,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public UUID deleteUser(UUID userId) throws NotFoundException {
         if (users.find(userId).getRole() != Role.USER) {
-            throw new IllegalArgumentException("User can delete only USER");
+            throw new IllegalArgumentException("User can delete only USER.");
         }
         users.delete(userId);
         return userId;
     }
 
     @Override
-    public Order createOrder(UUID userId, UUID restaurantId, Calendar date, String comment, String address, List<OrderDetail> details) {
-        Order order = Order
-                .builder()
-                .userId(userId)
-                .restaurantId(restaurantId)
-                .date(date)
-                .comment(comment)
-                .details(details)
-                .build();
+    public Order createOrder(Order order) {
+        order.setState(OrderState.CREATE);
         return orders.save(order);
     }
 

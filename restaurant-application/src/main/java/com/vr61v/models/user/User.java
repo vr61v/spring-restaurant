@@ -17,7 +17,6 @@ public class User {
     private String name;
     private String phone;
     private String email;
-    private String password;
     private Calendar dateOfBirth;
     private Gender gender;
     private Role role;

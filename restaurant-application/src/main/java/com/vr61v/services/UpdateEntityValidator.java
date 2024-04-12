@@ -9,13 +9,12 @@ import java.sql.Time;
 import java.util.Objects;
 
 public class UpdateEntityValidator {
-    public static boolean validateUserUpdate(User user, String name, String phone, String email, String password) {
+    public static boolean validateUserUpdate(User user, String name, String phone, String email) {
         boolean result = true;
 
         if (name != null) result = !Objects.equals(user.getName(), name);
         if (phone != null) result = !Objects.equals(user.getPhone(), phone);
         if (email != null) result = !Objects.equals(user.getEmail(), email);
-        if (password != null) result = !Objects.equals(user.getPassword(), password);
         return result;
     }
 

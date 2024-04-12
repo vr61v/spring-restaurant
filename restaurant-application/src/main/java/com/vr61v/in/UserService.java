@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface UserService extends BasicUserService{
-    Order createOrder(UUID userId, UUID restaurantId, Calendar date, String comment, String address, List<OrderDetail> details);
+    Order createOrder(Order order);
     Order getOrderById(UUID orderId) throws NotFoundException;
     List<Order> getUserOrders(UUID userId);
     Order payOrder(UUID orderId, Integer amount) throws NotEnoughMoneyException, IllegalOrderStateChangeException, NotFoundException;

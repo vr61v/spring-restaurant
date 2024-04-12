@@ -207,17 +207,16 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public User updateUser(UUID userId, String name, String phone, String email, String password) throws NotFoundException {
+    public User updateUser(UUID userId, String name, String phone, String email) throws NotFoundException {
         User update = users.find(userId);
 
-        if (!UpdateEntityValidator.validateUserUpdate(update, name, phone, email, password)) {
+        if (!UpdateEntityValidator.validateUserUpdate(update, name, phone, email)) {
             throw new IllegalArgumentException("The updated fields must be different from the existing ones.");
         }
 
         if (name != null) update.setName(name);
         if (phone != null) update.setPhone(phone);
         if (email != null) update.setEmail(email);
-        if (password != null) update.setPassword(password);
 
         return update;
     }
