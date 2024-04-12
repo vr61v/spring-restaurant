@@ -36,7 +36,7 @@ public class UserServiceImplTests {
     private final Users users = mock(Users.class);
     private final Orders orders = mock(Orders.class);
     private final Cards cards = mock(Cards.class);
-    
+
     @Test
     public void testGetUserById() throws NotFoundException {
         User expected = new User(id, name, phone, email, dob, gender, role);
