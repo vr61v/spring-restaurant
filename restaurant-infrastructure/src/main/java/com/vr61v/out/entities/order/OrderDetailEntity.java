@@ -1,5 +1,6 @@
 package com.vr61v.out.entities.order;
 
+import com.vr61v.models.order.OrderDetail;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

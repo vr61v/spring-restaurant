@@ -20,7 +20,6 @@ public class Order {
     private UUID restaurantId;
     private Calendar date;
     private String comment;
-    private String address;
     private OrderState state;
     private List<OrderDetail> details;
 

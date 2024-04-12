@@ -1,8 +1,8 @@
 package com.vr61v.out.entities.user;
 
+import com.vr61v.models.user.types.Gender;
+import com.vr61v.models.user.types.Role;
 import com.vr61v.out.entities.order.OrderEntity;
-import com.vr61v.out.entities.user.types.Gender;
-import com.vr61v.out.entities.user.types.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -45,11 +45,11 @@ public class UserEntity {
     @Column(name = "role")
     private Role role;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private Set<OrderEntity> orders;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private Set<CardEntity> cards;
+//    @OneToMany(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id")
+//    private Set<OrderEntity> orders;
+//
+//    @OneToMany(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id")
+//    private Set<CardEntity> cards;
 }

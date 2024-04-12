@@ -1,11 +1,11 @@
 package com.vr61v.out.entities.user;
 
+import com.vr61v.models.user.types.CardType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import com.vr61v.out.entities.user.types.CardType;
 
 import java.util.UUID;
 

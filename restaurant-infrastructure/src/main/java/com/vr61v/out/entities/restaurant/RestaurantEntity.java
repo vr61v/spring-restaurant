@@ -45,9 +45,9 @@ public class RestaurantEntity {
     )
     private Set<ProductEntity> menu;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "restaurant_id")
-    private List<OrderEntity> orders;
+//    @OneToMany(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "restaurant_id")
+//    private List<OrderEntity> orders;
 
     public void addProductInMenu(ProductEntity product) {
         menu.add(product);

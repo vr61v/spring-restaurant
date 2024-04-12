@@ -76,7 +76,6 @@ public class UserServiceImpl implements UserService {
                 .restaurantId(restaurantId)
                 .date(date)
                 .comment(comment)
-                .address(address)
                 .details(details)
                 .build();
         return orders.save(order);

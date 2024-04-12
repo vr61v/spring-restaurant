@@ -11,7 +11,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Product {
     private UUID id;
-    private ProductCategory productCategory;
+    private Category category;
     private String name;
     private Integer price;
     private Integer weight;

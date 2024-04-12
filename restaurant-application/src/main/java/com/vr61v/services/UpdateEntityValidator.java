@@ -1,14 +1,12 @@
 package com.vr61v.services;
 
 import com.vr61v.models.product.Product;
-import com.vr61v.models.product.ProductCategory;
+import com.vr61v.models.product.Category;
 import com.vr61v.models.restaurant.Restaurant;
 import com.vr61v.models.user.User;
 
 import java.sql.Time;
-import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 public class UpdateEntityValidator {
     public static boolean validateUserUpdate(User user, String name, String phone, String email, String password) {
@@ -32,11 +30,11 @@ public class UpdateEntityValidator {
         return result;
     }
 
-    public static boolean validateProductUpdate(Product product, ProductCategory productCategory, Integer price, String name, Integer weight, String description, String composition) {
+    public static boolean validateProductUpdate(Product product, Category category, Integer price, String name, Integer weight, String description, String composition) {
         boolean result = true;
 
         if (name != null) result = !Objects.equals(product.getName(), name);
-        if (productCategory != null) result = !Objects.equals(product.getProductCategory(), productCategory);
+        if (category != null) result = !Objects.equals(product.getCategory(), category);
         if (price != null) result = !Objects.equals(product.getPrice(), price);
         if (weight != null) result = !Objects.equals(product.getWeight(), weight);
         if (description != null) result = !Objects.equals(product.getDescription(), description);
@@ -45,10 +43,10 @@ public class UpdateEntityValidator {
         return result;
     }
 
-    public static boolean validateProductCategoryUpdate(ProductCategory productCategory, String name) {
+    public static boolean validateProductCategoryUpdate(Category category, String name) {
         boolean result = true;
 
-        if (name != null) result = !Objects.equals(productCategory.getName(), name);
+        if (name != null) result = !Objects.equals(category.getName(), name);
 
         return result;
     }

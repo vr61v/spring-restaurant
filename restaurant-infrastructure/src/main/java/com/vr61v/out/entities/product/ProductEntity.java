@@ -1,5 +1,7 @@
 package com.vr61v.out.entities.product;
 
+import com.vr61v.models.product.Category;
+import com.vr61v.models.product.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

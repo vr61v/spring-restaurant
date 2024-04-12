@@ -2,6 +2,7 @@ package com.vr61v.models.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.UUID;
@@ -9,7 +10,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ProductCategory {
+@NoArgsConstructor
+public class Category {
     private UUID id;
     private String name;
 }

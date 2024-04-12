@@ -3,11 +3,11 @@ package com.vr61v.services;
 import com.vr61v.exceptions.NotFoundException;
 import com.vr61v.in.AdminService;
 import com.vr61v.models.product.Product;
-import com.vr61v.models.product.ProductCategory;
+import com.vr61v.models.product.Category;
 import com.vr61v.models.restaurant.Restaurant;
 import com.vr61v.models.user.types.Role;
 import com.vr61v.models.user.User;
-import com.vr61v.out.product.ProductCategories;
+import com.vr61v.out.product.Categories;
 import com.vr61v.out.product.Products;
 import com.vr61v.out.restaurant.Restaurants;
 import com.vr61v.out.user.Users;
@@ -22,7 +22,7 @@ import java.util.UUID;
 public class AdminServiceImpl implements AdminService {
     private final Restaurants restaurants;
     private final Products products;
-    private final ProductCategories productCategories;
+    private final Categories categories;
     private final Users users;
 
     @Override
@@ -139,13 +139,13 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Product updateProduct(UUID productId, UUID productCategoryId, Integer price, String name, Integer weight, String composition, String description) throws NotFoundException {
         Product product = products.find(productId);
-        ProductCategory productCategory = productCategories.find(productCategoryId);
-        if (!UpdateEntityValidator.validateProductUpdate(product, productCategory, price, name, weight, description, composition)) {
+        Category category = categories.find(productCategoryId);
+        if (!UpdateEntityValidator.validateProductUpdate(product, category, price, name, weight, description, composition)) {
             throw new IllegalArgumentException("The updated fields must be different from the existing ones.");
         }
 
         if (name != null) product.setName(name);
-        if (productCategoryId != null) product.setProductCategory(productCategory);
+        if (productCategoryId != null) product.setCategory(category);
         if (price != null) product.setPrice(price);
         if (weight != null) product.setWeight(weight);
         if (description != null) product.setDescription(description);
@@ -161,35 +161,35 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public ProductCategory createProductCategory(ProductCategory productCategory) {
-        return productCategories.save(productCategory);
+    public Category createProductCategory(Category category) {
+        return categories.save(category);
     }
 
     @Override
-    public ProductCategory getProductCategoryById(UUID productCategoryId) throws NotFoundException {
-        return productCategories.find(productCategoryId);
+    public Category getProductCategoryById(UUID productCategoryId) throws NotFoundException {
+        return categories.find(productCategoryId);
     }
 
     @Override
-    public List<ProductCategory> getAllProductCategory() {
-        return productCategories.findAll();
+    public List<Category> getAllProductCategory() {
+        return categories.findAll();
     }
 
     @Override
-    public ProductCategory updateProductCategory(UUID productCategoryId, String name) throws NotFoundException {
-        ProductCategory productCategory = productCategories.find(productCategoryId);
-        if (!UpdateEntityValidator.validateProductCategoryUpdate(productCategory, name)) {
+    public Category updateProductCategory(UUID productCategoryId, String name) throws NotFoundException {
+        Category category = categories.find(productCategoryId);
+        if (!UpdateEntityValidator.validateProductCategoryUpdate(category, name)) {
             throw new IllegalArgumentException("The updated fields must be different from the existing ones.");
         }
 
-        if (name != null) productCategory.setName(name);
+        if (name != null) category.setName(name);
 
-        return productCategories.save(productCategory);
+        return categories.save(category);
     }
 
     @Override
     public UUID deleteProductCategory(UUID productCategoryId) throws NotFoundException {
-        productCategories.delete(productCategoryId);
+        categories.delete(productCategoryId);
         return productCategoryId;
     }
 

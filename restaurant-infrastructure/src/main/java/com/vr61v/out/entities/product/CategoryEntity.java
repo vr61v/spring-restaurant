@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(schema = "public", name = "product_category")
+@Table(schema = "public", name = "category")
 public class CategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

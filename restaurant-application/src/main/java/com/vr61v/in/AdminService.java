@@ -2,7 +2,7 @@ package com.vr61v.in;
 
 import com.vr61v.exceptions.NotFoundException;
 import com.vr61v.models.product.Product;
-import com.vr61v.models.product.ProductCategory;
+import com.vr61v.models.product.Category;
 import com.vr61v.models.restaurant.Restaurant;
 
 import java.sql.Time;
@@ -26,9 +26,9 @@ public interface AdminService extends BasicUserService {
     Product updateProduct(UUID productId, UUID productCategoryId, Integer price, String name, Integer weight, String composition, String description) throws NotFoundException;
     UUID deleteProduct(UUID productId) throws NotFoundException;
 
-    ProductCategory createProductCategory(ProductCategory productCategory);
-    ProductCategory getProductCategoryById(UUID productCategoryId) throws NotFoundException;
-    List<ProductCategory> getAllProductCategory();
-    ProductCategory updateProductCategory(UUID productCategoryId, String name) throws NotFoundException;
+    Category createProductCategory(Category category);
+    Category getProductCategoryById(UUID productCategoryId) throws NotFoundException;
+    List<Category> getAllProductCategory();
+    Category updateProductCategory(UUID productCategoryId, String name) throws NotFoundException;
     UUID deleteProductCategory(UUID productCategoryId) throws NotFoundException;
 }

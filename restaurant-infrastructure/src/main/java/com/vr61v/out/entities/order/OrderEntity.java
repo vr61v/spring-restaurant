@@ -1,6 +1,7 @@
 package com.vr61v.out.entities.order;
 
-import com.vr61v.out.entities.order.types.OrderState;
+import com.vr61v.models.order.Order;
+import com.vr61v.models.order.types.OrderState;
 import jakarta.persistence.*;
 import lombok.*;
 
