@@ -24,6 +24,13 @@ import java.util.*;
 
 import static org.mockito.Mockito.*;
 
+/*
+ * Tests for:
+ * 1. getUserById, updateUser, deleteUser
+ * 2. createOrder, payOrder, cancelOrder
+ * 3. registerCard
+ */
+
 public class UserServiceImplTests {
     private final UUID id = UUID.fromString("11111111-1111-1111-1111-111111111111");
     private final String name = "I am test user";

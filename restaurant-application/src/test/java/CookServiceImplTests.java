@@ -13,6 +13,11 @@ import java.util.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/*
+ * Tests for:
+ * 1. takeOrder, completeOrder
+ */
+
 public class CookServiceImplTests {
     private final Orders orders = mock(Orders.class);
 

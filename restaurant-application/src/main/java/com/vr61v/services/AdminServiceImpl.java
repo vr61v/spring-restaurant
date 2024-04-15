@@ -65,8 +65,8 @@ public class AdminServiceImpl implements AdminService {
         }
 
         restaurant.addProductInMenu(product);
-
-        return restaurants.save(restaurant);
+        restaurants.save(restaurant);
+        return restaurant;
     }
 
     @Override
@@ -82,7 +82,8 @@ public class AdminServiceImpl implements AdminService {
             restaurant.addProductInMenu(i);
         }
 
-        return restaurants.save(restaurant);
+        restaurants.save(restaurant);
+        return restaurant;
     }
 
     @Override
@@ -95,8 +96,8 @@ public class AdminServiceImpl implements AdminService {
         }
 
         restaurant.removeProductFromMenu(product);
-
-        return restaurants.save(restaurant);
+        restaurants.save(restaurant);
+        return restaurant;
     }
 
     @Override
@@ -123,7 +124,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Product createProduct(Product product) {
-        return products.save(product);
+        products.save(product);
+        return product;
     }
 
     @Override
@@ -137,21 +139,22 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Product updateProduct(UUID productId, UUID productCategoryId, Integer price, String name, Integer weight, String composition, String description) throws NotFoundException {
+    public Product updateProduct(UUID productId, UUID categoryId, Integer price, String name, Integer weight, String composition, String description) throws NotFoundException {
         Product product = products.find(productId);
-        Category category = categories.find(productCategoryId);
+        Category category = categories.find(categoryId);
         if (!UpdateEntityValidator.validateProductUpdate(product, category, price, name, weight, description, composition)) {
             throw new IllegalArgumentException("The updated fields must be different from the existing ones.");
         }
 
         if (name != null) product.setName(name);
-        if (productCategoryId != null) product.setCategory(category);
+        if (categoryId != null) product.setCategory(category);
         if (price != null) product.setPrice(price);
         if (weight != null) product.setWeight(weight);
         if (description != null) product.setDescription(description);
         if (composition != null) product.setComposition(composition);
 
-        return products.save(product);
+        products.save(product);
+        return product;
     }
 
     @Override
@@ -161,36 +164,37 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Category createProductCategory(Category category) {
-        return categories.save(category);
+    public Category createCategory(Category category) {
+        categories.save(category);
+        return category;
     }
 
     @Override
-    public Category getProductCategoryById(UUID productCategoryId) throws NotFoundException {
-        return categories.find(productCategoryId);
+    public Category getCategoryById(UUID categoryId) throws NotFoundException {
+        return categories.find(categoryId);
     }
 
     @Override
-    public List<Category> getAllProductCategory() {
+    public List<Category> getAllCategories() {
         return categories.findAll();
     }
 
     @Override
-    public Category updateProductCategory(UUID productCategoryId, String name) throws NotFoundException {
-        Category category = categories.find(productCategoryId);
+    public Category updateCategory(UUID categoryId, String name) throws NotFoundException {
+        Category category = categories.find(categoryId);
         if (!UpdateEntityValidator.validateProductCategoryUpdate(category, name)) {
             throw new IllegalArgumentException("The updated fields must be different from the existing ones.");
         }
 
         if (name != null) category.setName(name);
-
-        return categories.save(category);
+        categories.save(category);
+        return category;
     }
 
     @Override
-    public UUID deleteProductCategory(UUID productCategoryId) throws NotFoundException {
-        categories.delete(productCategoryId);
-        return productCategoryId;
+    public UUID deleteCategory(UUID categoryId) throws NotFoundException {
+        categories.delete(categoryId);
+        return categoryId;
     }
 
     @Override
@@ -198,7 +202,8 @@ public class AdminServiceImpl implements AdminService {
         if (user.getRole() == Role.USER) {
             throw new IllegalArgumentException("Admin can create only admins and cooks.");
         }
-        return users.save(user);
+        users.save(user);
+        return user;
     }
 
     @Override

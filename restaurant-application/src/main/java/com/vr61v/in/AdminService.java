@@ -23,12 +23,12 @@ public interface AdminService extends BasicUserService {
     Product createProduct(Product product);
     Product getProductById(UUID productId) throws NotFoundException;
     List<Product> getAllProducts();
-    Product updateProduct(UUID productId, UUID productCategoryId, Integer price, String name, Integer weight, String composition, String description) throws NotFoundException;
+    Product updateProduct(UUID productId, UUID categoryId, Integer price, String name, Integer weight, String composition, String description) throws NotFoundException;
     UUID deleteProduct(UUID productId) throws NotFoundException;
 
-    Category createProductCategory(Category category);
-    Category getProductCategoryById(UUID productCategoryId) throws NotFoundException;
-    List<Category> getAllProductCategory();
-    Category updateProductCategory(UUID productCategoryId, String name) throws NotFoundException;
-    UUID deleteProductCategory(UUID productCategoryId) throws NotFoundException;
+    Category createCategory(Category category);
+    Category getCategoryById(UUID categoryId) throws NotFoundException;
+    List<Category> getAllCategories();
+    Category updateCategory(UUID categoryId, String name) throws NotFoundException;
+    UUID deleteCategory(UUID categoryId) throws NotFoundException;
 }
