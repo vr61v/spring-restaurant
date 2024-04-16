@@ -9,5 +9,5 @@ import java.util.UUID;
 
 public interface OrdersRepository extends JpaRepository<OrderEntity, UUID> {
     List<OrderEntity> findByUserId(UUID id);
-    List<OrderEntity> findByState(OrderState state);
+    List<OrderEntity> findByStateAndRestaurantId(OrderState state, UUID restaurantId);
 }

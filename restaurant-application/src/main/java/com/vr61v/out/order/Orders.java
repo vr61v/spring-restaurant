@@ -9,5 +9,5 @@ import java.util.UUID;
 
 public interface Orders extends BasicRepository<Order> {
     List<Order> findByUserId(UUID id);
-    List<Order> findByState(OrderState state);
+    List<Order> findByStateAndRestaurantId(OrderState state, UUID restaurantId);
 }

@@ -27,7 +27,7 @@ public class CookServiceImplTests {
         UUID restaurantId = UUID.fromString("22222222-2222-2222-2222-222222222222");
         UUID userid = UUID.fromString("11111111-1111-1111-1111-111111111111");
         Calendar date = new GregorianCalendar(2000, Calendar.JANUARY, 1);
-        String comment = "i want something...";
+        String comment = "i want something";
         List<OrderDetail> details =  new ArrayList<>();
         Order order =  new Order(orderId, userid, restaurantId, date, comment, OrderState.PAY, details);
 
@@ -64,9 +64,9 @@ public class CookServiceImplTests {
             service.takeOrder(orderId3);
         });
 
-        Assertions.assertEquals("The order must be in PAY state.", actualCreate.getMessage());
-        Assertions.assertEquals("The order must be in PAY state.", actualCook.getMessage());
-        Assertions.assertEquals("The order must be in PAY state.", actualCansel.getMessage());
+        Assertions.assertEquals("The order must be in PAY state", actualCreate.getMessage());
+        Assertions.assertEquals("The order must be in PAY state", actualCook.getMessage());
+        Assertions.assertEquals("The order must be in PAY state", actualCansel.getMessage());
     }
 
     @Test
@@ -75,7 +75,7 @@ public class CookServiceImplTests {
         UUID restaurantId = UUID.fromString("22222222-2222-2222-2222-222222222222");
         UUID userid = UUID.fromString("11111111-1111-1111-1111-111111111111");
         Calendar date = new GregorianCalendar(2000, Calendar.JANUARY, 1);
-        String comment = "i want something...";
+        String comment = "i want something";
         List<OrderDetail> details =  new ArrayList<>();
         Order order =  new Order(orderId, userid, restaurantId, date, comment, OrderState.COOK, details);
 
@@ -112,8 +112,8 @@ public class CookServiceImplTests {
             service.completeOrder(orderId3);
         });
 
-        Assertions.assertEquals("The order must be in COOK state.", actualCreate.getMessage());
-        Assertions.assertEquals("The order must be in COOK state.", actualCook.getMessage());
-        Assertions.assertEquals("The order must be in COOK state.", actualCansel.getMessage());
+        Assertions.assertEquals("The order must be in COOK state", actualCreate.getMessage());
+        Assertions.assertEquals("The order must be in COOK state", actualCook.getMessage());
+        Assertions.assertEquals("The order must be in COOK state", actualCansel.getMessage());
     }
 }

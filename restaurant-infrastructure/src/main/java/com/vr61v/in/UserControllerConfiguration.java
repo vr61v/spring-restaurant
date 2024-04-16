@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
-public class UserControllerConfig {
+public class UserControllerConfiguration {
     @Bean
     public UserService userService(
             UsersRepositoryAdapter usersRepositoryAdapter,

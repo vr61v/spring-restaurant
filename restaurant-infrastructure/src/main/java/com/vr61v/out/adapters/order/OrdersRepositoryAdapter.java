@@ -48,8 +48,8 @@ public class OrdersRepositoryAdapter implements Orders {
     }
 
     @Override
-    public List<Order> findByState(OrderState state) {
-        List<OrderEntity> orders = repository.findByState(state);
+    public List<Order> findByStateAndRestaurantId(OrderState state, UUID restaurantId) {
+        List<OrderEntity> orders = repository.findByStateAndRestaurantId(state, restaurantId);
         return orders.stream().map(mapper::entityToModel).collect(Collectors.toList());
     }
 }

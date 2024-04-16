@@ -17,19 +17,19 @@ public class CookServiceImpl implements CookService {
 
     @Override
     public List<Order> getAwaitingOrders(UUID restaurantId) {
-        return orders.findByState(OrderState.PAY);
+        return orders.findByStateAndRestaurantId(OrderState.PAY, restaurantId);
     }
 
     @Override
     public List<Order> getActiveOrders(UUID restaurantId) {
-        return orders.findByState(OrderState.COOK);
+        return orders.findByStateAndRestaurantId(OrderState.COOK, restaurantId);
     }
 
     @Override
     public Order takeOrder(UUID orderId) throws IllegalOrderStateChangeException, NotFoundException {
         Order order = orders.find(orderId);
-        if (order.getState() != OrderState.PAY) {
-            throw new IllegalOrderStateChangeException("The order must be in PAY state.");
+        if (!order.getState().equals(OrderState.PAY)) {
+            throw new IllegalOrderStateChangeException("The order must be in PAY state");
         }
 
         order.setState(OrderState.COOK);
@@ -41,8 +41,8 @@ public class CookServiceImpl implements CookService {
     @Override
     public Order completeOrder(UUID orderId) throws IllegalOrderStateChangeException, NotFoundException {
         Order order = orders.find(orderId);
-        if (order.getState() != OrderState.COOK) {
-            throw new IllegalOrderStateChangeException("The order must be in COOK state.");
+        if (!order.getState().equals(OrderState.COOK)) {
+            throw new IllegalOrderStateChangeException("The order must be in COOK state");
         }
 
         order.setState(OrderState.DONE);
@@ -54,8 +54,8 @@ public class CookServiceImpl implements CookService {
     @Override
     public Order cancelOrder(UUID orderId) throws IllegalOrderStateChangeException, NotFoundException {
         Order order = orders.find(orderId);
-        if (order.getState() != OrderState.COOK) {
-            throw new IllegalOrderStateChangeException("The order must be in COOK state.");
+        if (!order.getState().equals(OrderState.COOK)) {
+            throw new IllegalOrderStateChangeException("The order must be in COOK state");
         }
 
         order.setState(OrderState.CANCEL);
