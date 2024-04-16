@@ -15,7 +15,6 @@ import com.vr61v.out.user.Cards;
 import com.vr61v.out.user.Users;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,7 +34,7 @@ public class UserServiceImpl implements UserService {
     public User getUserById(UUID userId) throws NotFoundException {
         User find = users.find(userId);
         if (find.getRole() != Role.USER) {
-            throw new IllegalArgumentException("User can get only USER.");
+            throw new IllegalArgumentException("User can get only USER");
         }
         return find;
     }
@@ -44,11 +43,11 @@ public class UserServiceImpl implements UserService {
     public User updateUser(UUID userId, String name, String phone, String email) throws NotFoundException {
         User update = users.find(userId);
         if (update.getRole() != Role.USER) {
-            throw new IllegalArgumentException("User can update only USER.");
+            throw new IllegalArgumentException("User can update only USER");
         }
 
         if (!UpdateEntityValidator.validateUserUpdate(update, name, phone, email)) {
-            throw new IllegalArgumentException("The updated fields must be different from the existing ones.");
+            throw new IllegalArgumentException("The updated fields must be different from the existing ones");
         }
 
         if (name != null) update.setName(name);
@@ -63,7 +62,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UUID deleteUser(UUID userId) throws NotFoundException {
         if (users.find(userId).getRole() != Role.USER) {
-            throw new IllegalArgumentException("User can delete only USER.");
+            throw new IllegalArgumentException("User can delete only USER");
         }
         users.delete(userId);
         return userId;
@@ -76,8 +75,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Order getOrderById(UUID orderId) throws NotFoundException {
-        return orders.find(orderId);
+    public Order getOrderById(UUID userId, UUID orderId) throws NotFoundException {
+        Order order = orders.find(orderId);
+        if (!order.getUserId().equals(userId)) {
+            throw new IllegalArgumentException("You can only get your orders");
+        }
+        return order;
     }
 
     @Override
@@ -86,10 +89,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Order payOrder(UUID orderId, Integer amount) throws NotEnoughMoneyException, IllegalOrderStateChangeException, NotFoundException {
+    public Order payOrder(UUID userId, UUID orderId, Integer amount) throws NotEnoughMoneyException, IllegalOrderStateChangeException, NotFoundException {
         Order order = orders.find(orderId);
+
+        if (!order.getUserId().equals(userId)) {
+            throw new IllegalArgumentException("You can only pay for your orders");
+        }
         if (order.getState() != OrderState.CREATE) {
-            throw new IllegalOrderStateChangeException("The order has already been paid for.");
+            throw new IllegalOrderStateChangeException("The order has already been paid for");
         }
 
         int totalPrice = 0;
@@ -103,18 +110,21 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new NotEnoughMoneyException(
                     "The order" + order.getId() + " has total price {" + totalPrice +
-                    "}, amount {" + amount + "} is not enough.");
+                    "}, amount {" + amount + "} is not enough");
         }
 
         return order;
     }
 
     @Override
-    public Order cancelOrder(UUID orderId) throws IllegalOrderStateChangeException, NotFoundException {
+    public Order cancelOrder(UUID userId, UUID orderId) throws IllegalOrderStateChangeException, NotFoundException {
         Order order = orders.find(orderId);
 
+        if (!order.getUserId().equals(userId)) {
+            throw new IllegalArgumentException("You can only cancel your orders");
+        }
         if (order.getState() != OrderState.CREATE && order.getState() != OrderState.PAY) {
-            throw new IllegalOrderStateChangeException("The order must be in CREATE or PAY state.");
+            throw new IllegalOrderStateChangeException("The order must be in CREATE or PAY state");
         }
 
         order.setState(OrderState.CANCEL);
@@ -134,8 +144,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Card getCardById(UUID cardId) throws NotFoundException {
-        return cards.find(cardId);
+    public Card getCardByNumber(UUID userId, String cardNumber) throws NotFoundException {
+        Card card = cards.findByNumber(cardNumber);
+
+        if (!card.getUserId().equals(userId)) {
+            throw new IllegalArgumentException("You can only get your cards");
+        }
+
+        return card;
     }
 
     @Override
@@ -144,7 +160,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UUID deleteCard(UUID cardId) throws NotFoundException {
+    public UUID deleteCard(UUID userId, UUID cardId) throws NotFoundException {
+        Card card = cards.find(cardId);
+
+        if (!card.getUserId().equals(userId)) {
+            throw new IllegalArgumentException("You can only delete your cards");
+        }
+
         cards.delete(cardId);
         return cardId;
     }

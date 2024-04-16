@@ -57,7 +57,7 @@ public class UserServiceImplTests {
 
     @Test
     public void testGetUserByIdExpectedIllegalArgumentException() throws NotFoundException {
-        String  expected = "User can get only USER.";
+        String  expected = "User can get only USER";
         User admin = new User(id, name, phone, email, dob, gender, Role.ADMIN);
         when(users.find(id)).thenReturn(admin);
         UserServiceImpl service = new UserServiceImpl(users, orders, cards);
@@ -88,8 +88,8 @@ public class UserServiceImplTests {
         } catch (IllegalArgumentException e) {
             Assertions.assertEquals(
                     old.getRole() == Role.ADMIN ?
-                            "User can update only USER." :
-                            "The updated fields must be different from the existing ones.",
+                            "User can update only USER" :
+                            "The updated fields must be different from the existing ones",
                     e.getMessage());
         }
         if (actual != null) {
@@ -120,7 +120,7 @@ public class UserServiceImplTests {
 
     @Test
     public void testDeleteUserExpectedIllegalArgumentException() throws NotFoundException {
-        String  expected = "User can delete only USER.";
+        String  expected = "User can delete only USER";
         User user = new User(id, name, phone, email, dob, gender, Role.ADMIN);
         when(users.find(id)).thenReturn(user);
         doNothing().when(users).delete(id);
@@ -138,7 +138,7 @@ public class UserServiceImplTests {
         UUID orderId = UUID.fromString("33333333-3333-3333-3333-333333333333");
         UUID restaurantId = UUID.fromString("22222222-2222-2222-2222-222222222222");
         Calendar date = new GregorianCalendar(2000, Calendar.JANUARY, 1);
-        String comment = "i want something...";
+        String comment = "i want something..";
         List<OrderDetail> details =  new ArrayList<>();
         Order expected =  new Order(orderId, id, restaurantId, date, comment, OrderState.CREATE, details);
 
@@ -159,7 +159,7 @@ public class UserServiceImplTests {
 
         Order actual = null;
         try {
-            actual = service.payOrder(orderId, amount);
+            actual = service.payOrder(expected.getUserId(), orderId, amount);
         } catch (Exception e) {
             if (expected.getState() != OrderState.CREATE) {
                 Assertions.assertEquals(IllegalOrderStateChangeException.class, e.getClass());
@@ -177,14 +177,14 @@ public class UserServiceImplTests {
         UUID orderId = UUID.fromString("33333333-3333-3333-3333-333333333333");
         UUID restaurantId = UUID.fromString("22222222-2222-2222-2222-222222222222");
         Calendar date = new GregorianCalendar(2000, Calendar.JANUARY, 1);
-        String comment = "i want something...";
+        String comment = "i want something..";
         List<OrderDetail> details =  new ArrayList<>();
         Order expected =  new Order(orderId, id, restaurantId, date, comment, OrderState.CREATE, details);
 
         when(orders.find(orderId)).thenReturn(expected);
         UserServiceImpl service = new UserServiceImpl(users, orders, cards);
 
-        Order actual = service.cancelOrder(orderId);
+        Order actual = service.cancelOrder(expected.getUserId(), orderId);
 
         Assertions.assertEquals(expected, actual);
     }
@@ -193,23 +193,23 @@ public class UserServiceImplTests {
     public void testCanselOrderExpectedIllegalOrderStateChangeException() throws NotFoundException {
         UUID orderId1 = UUID.fromString("11111111-1111-1111-1111-111111111111");
         UUID orderId2 = UUID.fromString("22222222-2222-2222-2222-22222222222");
-        Order cook =  Order.builder().id(orderId1).state(OrderState.COOK).build();
-        Order cancel =  Order.builder().id(orderId2).state(OrderState.CANCEL).build();
+        Order cook =  Order.builder().id(orderId1).userId(id).state(OrderState.COOK).build();
+        Order cancel =  Order.builder().id(orderId2).userId(id).state(OrderState.CANCEL).build();
 
         when(orders.find(orderId1)).thenReturn(cook);
         when(orders.find(orderId2)).thenReturn(cancel);
         UserServiceImpl service = new UserServiceImpl(users, orders, cards);
 
         IllegalOrderStateChangeException actualCook = Assertions.assertThrows(IllegalOrderStateChangeException.class, () -> {
-            service.cancelOrder(orderId1);
+            service.cancelOrder(id, orderId1);
         });
 
         IllegalOrderStateChangeException actualCansel = Assertions.assertThrows(IllegalOrderStateChangeException.class, () -> {
-            service.cancelOrder(orderId2);
+            service.cancelOrder(id, orderId2);
         });
 
-        Assertions.assertEquals("The order must be in CREATE or PAY state.", actualCook.getMessage());
-        Assertions.assertEquals("The order must be in CREATE or PAY state.", actualCansel.getMessage());
+        Assertions.assertEquals("The order must be in CREATE or PAY state", actualCook.getMessage());
+        Assertions.assertEquals("The order must be in CREATE or PAY state", actualCansel.getMessage());
     }
 
     @Test
