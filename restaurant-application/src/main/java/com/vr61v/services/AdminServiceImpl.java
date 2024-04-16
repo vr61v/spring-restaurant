@@ -56,20 +56,6 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Restaurant addProductInRestaurant(UUID restaurantId, UUID productId) throws NotFoundException {
-        Restaurant restaurant = restaurants.find(restaurantId);
-        Product product = products.find(productId);
-
-        if (restaurant.getMenu().contains(product)) {
-            throw new IllegalArgumentException("The product {" + productId + "} is already on the menu.");
-        }
-
-        restaurant.addProductInMenu(product);
-        restaurants.save(restaurant);
-        return restaurant;
-    }
-
-    @Override
     public Restaurant addProductsInRestaurant(UUID restaurantId, List<UUID> productIds) throws NotFoundException {
         Restaurant restaurant = restaurants.find(restaurantId);
         List<Product> productList = new ArrayList<>();
@@ -82,22 +68,7 @@ public class AdminServiceImpl implements AdminService {
             restaurant.addProductInMenu(i);
         }
 
-        restaurants.save(restaurant);
-        return restaurant;
-    }
-
-    @Override
-    public Restaurant removeProductFromRestaurant(UUID restaurantId, UUID productId) throws NotFoundException {
-        Restaurant restaurant = restaurants.find(restaurantId);
-        Product product = products.find(productId);
-
-        if (!restaurant.getMenu().contains(product)) {
-            throw new IllegalArgumentException("This restaurant does not have this product {" + productId + "} on the menu.");
-        }
-
-        restaurant.removeProductFromMenu(product);
-        restaurants.save(restaurant);
-        return restaurant;
+        return restaurants.save(restaurant);
     }
 
     @Override
@@ -124,8 +95,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Product createProduct(Product product) {
-        products.save(product);
-        return product;
+        return products.save(product);
     }
 
     @Override
@@ -153,8 +123,7 @@ public class AdminServiceImpl implements AdminService {
         if (description != null) product.setDescription(description);
         if (composition != null) product.setComposition(composition);
 
-        products.save(product);
-        return product;
+        return products.save(product);
     }
 
     @Override
@@ -165,8 +134,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Category createCategory(Category category) {
-        categories.save(category);
-        return category;
+        return categories.save(category);
     }
 
     @Override
@@ -187,8 +155,8 @@ public class AdminServiceImpl implements AdminService {
         }
 
         if (name != null) category.setName(name);
-        categories.save(category);
-        return category;
+
+        return categories.save(category);
     }
 
     @Override
@@ -202,8 +170,7 @@ public class AdminServiceImpl implements AdminService {
         if (user.getRole() == Role.USER) {
             throw new IllegalArgumentException("Admin can create only admins and cooks.");
         }
-        users.save(user);
-        return user;
+        return users.save(user);
     }
 
     @Override
@@ -222,6 +189,8 @@ public class AdminServiceImpl implements AdminService {
         if (name != null) update.setName(name);
         if (phone != null) update.setPhone(phone);
         if (email != null) update.setEmail(email);
+
+        users.save(update);
 
         return update;
     }

@@ -25,7 +25,6 @@ public class UserController {
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User created = userService.createUser(user);
-        log.info("User with id {" + user.getId() + "} was created");
         return new ResponseEntity<>(created, HttpStatus.OK);
     }
 
@@ -40,7 +39,6 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        log.info("User with id {" + id + "} was got");
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
@@ -60,7 +58,6 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        log.info("User with id {" + id + "} was updated");
         return new ResponseEntity<>(update, HttpStatus.OK);
     }
 
@@ -73,7 +70,6 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        log.info("User with id {" + id + "} was deleted");
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
@@ -82,14 +78,12 @@ public class UserController {
     public ResponseEntity<Order> createOrder(@PathVariable UUID userId, @RequestBody Order order) {
         order.setUserId(userId);
         Order created = userService.createOrder(order);
-        log.info("Order with id {" + order.getId() + "} was created");
         return new ResponseEntity<>(created, HttpStatus.OK);
     }
 
     @GetMapping("/{userId}/orders")
     public ResponseEntity<List<Order>> getUserOrders(@PathVariable UUID userId) {
         List<Order> orders = userService.getUserOrders(userId);
-        log.info("User with id {" + userId + "} got " + orders.size() + " orders");
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
@@ -104,7 +98,6 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        log.info("Order with id {" + orderId + "} was got");
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
@@ -119,7 +112,6 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        log.info("Order with id {" + orderId + "} has been paid for");
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
@@ -134,7 +126,6 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        log.info("Order with id {" + orderId + "} has been canceled");
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
@@ -150,14 +141,12 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        log.info("Card with id {" + register.getId() + "} was registered");
         return new ResponseEntity<>(register, HttpStatus.OK);
     }
 
     @GetMapping("/{userId}/cards")
     public ResponseEntity<List<Card>> getUserCards(@PathVariable UUID userId) {
         List<Card> cards = userService.getUserCards(userId);
-        log.info("User with id {" + userId + "} got " + cards.size() + " orders");
         return new ResponseEntity<>(cards, HttpStatus.OK);
     }
 
@@ -172,7 +161,6 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        log.info("Card with id {" + card.getId() + "} was got");
         return new ResponseEntity<>(card, HttpStatus.OK);
     }
 
@@ -186,7 +174,6 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        log.info("Card with id {" + cardId + "} was deleted");
         return new ResponseEntity<>(cardId, HttpStatus.OK);
     }
 }

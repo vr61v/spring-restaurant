@@ -54,9 +54,7 @@ public class UserServiceImpl implements UserService {
         if (phone != null) update.setPhone(phone);
         if (email != null) update.setEmail(email);
 
-        users.save(update);
-
-        return update;
+        return users.save(update);
     }
 
     @Override
@@ -64,6 +62,7 @@ public class UserServiceImpl implements UserService {
         if (users.find(userId).getRole() != Role.USER) {
             throw new IllegalArgumentException("User can delete only USER");
         }
+
         users.delete(userId);
         return userId;
     }
@@ -80,6 +79,7 @@ public class UserServiceImpl implements UserService {
         if (!order.getUserId().equals(userId)) {
             throw new IllegalArgumentException("You can only get your orders");
         }
+
         return order;
     }
 
@@ -128,9 +128,8 @@ public class UserServiceImpl implements UserService {
         }
 
         order.setState(OrderState.CANCEL);
-        orders.save(order);
 
-        return order;
+        return orders.save(order);
     }
 
     @Override
@@ -138,9 +137,8 @@ public class UserServiceImpl implements UserService {
         Card card = cards.findByNumber(cardNumber);
 
         card.setUserId(userId);
-        cards.save(card);
 
-        return card;
+        return cards.save(card);
     }
 
     @Override

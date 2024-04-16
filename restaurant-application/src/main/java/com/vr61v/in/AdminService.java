@@ -14,9 +14,7 @@ public interface AdminService extends BasicUserService {
     Restaurant getRestaurantById(UUID restaurantId) throws NotFoundException;
     List<Restaurant> getAllRestaurants();
     Restaurant updateRestaurant(UUID restaurantId, String address, String phone, Time openingHoursFrom, Time openingHoursTo) throws NotFoundException;
-    Restaurant addProductInRestaurant(UUID restaurantId, UUID productId) throws NotFoundException;
     Restaurant addProductsInRestaurant(UUID restaurantId, List<UUID> productIds) throws NotFoundException;
-    Restaurant removeProductFromRestaurant(UUID restaurantId, UUID productId) throws NotFoundException;
     Restaurant removeProductsFromRestaurant(UUID restaurantId, List<UUID> productIds) throws NotFoundException;
     UUID deleteRestaurant(UUID restaurantId) throws NotFoundException;
 

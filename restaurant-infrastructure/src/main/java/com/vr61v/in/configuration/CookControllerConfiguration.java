@@ -1,5 +1,6 @@
-package com.vr61v.in;
+package com.vr61v.in.configuration;
 
+import com.vr61v.in.CookService;
 import com.vr61v.out.adapters.order.OrdersRepositoryAdapter;
 import com.vr61v.services.CookServiceImpl;
 import org.springframework.context.annotation.Bean;

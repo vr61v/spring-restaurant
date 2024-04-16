@@ -34,12 +34,13 @@ create table if not exists "category"(
 
 create table if not exists "product"(
     id uuid primary key not null,
-    category_id uuid not null,
+    category_id uuid,
     name varchar(50) not null,
     price int not null,
     weight int,
     composition varchar(300),
-    description varchar(300)
+    description varchar(300),
+    foreign key (category_id) references category(id)
 );
 
 create table if not exists "menu"(

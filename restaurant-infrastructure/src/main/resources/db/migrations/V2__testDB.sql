@@ -37,11 +37,30 @@ insert into "order"
     ('6dd4c3f6-546b-495b-9809-9fffeb98f536', '58e1da2f-b3c2-4d00-a5da-5b80a635a7ab', '073a765d-76c0-446d-9210-968a009d440e', now(), 'cancel', 'COOK');
 
 
+-- AdminController tests data
+insert into "user"
+    (id, name, phone, email, date_of_birth, gender, role) values
+    ('60c0f10c-4ee6-4682-8566-1b4a1d131afc', 'get', '+79000000000', 'something@mail.ru', '01/01/2000', 'MALE', 'ADMIN'),
+    ('7a7cfa5b-1ea2-4c74-9e6d-aeddcb5492de', 'put', '+79000000000', 'something@mail.ru', '01/01/2000', 'MALE', 'ADMIN'),
+    ('5d355992-ed99-4644-b5a8-756d2fa7edef', 'delete', '+79000000000', 'something@mail.ru', '01/01/2000', 'MALE', 'ADMIN');
+
+insert into "restaurant"
+    (id, address, phone, opening_hours_from, opening_hours_to) values
+    ('e36d91e5-5277-41cb-8375-94c645c2ffef', 'get', '+79000000000', '09:00:00', '23:00:00'),
+    ('99281df3-e6a5-45dc-87bc-ce6189595a8d', 'put', '+79000000000', '09:00:00', '23:00:00'),
+    ('ac082680-3818-4915-88ba-8ffebdee3d7c', 'delete', '+79000000000', '09:00:00', '23:00:00');
+
+insert into "category"
+    (id, name) values
+    ('85688b63-da43-4330-89ae-08a4c8c98577', 'get'),
+    ('e5199c15-c828-4bab-9816-2e0e6c79320e', 'put'),
+    ('1a9b6b02-4fd3-4b93-b928-aedd067d5d07', 'delete');
 
 
-
-
-
-
-
-
+insert into "category" values ('d77c53c9-c3c9-41d7-8c58-a436df7c7bc8', 'AdminProductTestsMock'),
+                              ('dc854133-de51-441e-b6c0-b1f9b44201d6', 'AdminProductPutTestsMock');
+insert into "product"
+    (id, category_id, name, price, weight, composition, description) values
+    ('1cba6efc-654a-4f6c-b4c2-0390e56b1553', 'd77c53c9-c3c9-41d7-8c58-a436df7c7bc8', 'get', 1, 1, 'something...', 'something...'),
+    ('227f7256-c35e-41a3-bbd3-f46795a369b6', 'd77c53c9-c3c9-41d7-8c58-a436df7c7bc8', 'put', 1, 1, 'something...', 'something...'),
+    ('c3cee70c-7f83-48ea-85de-783b22482c36', 'd77c53c9-c3c9-41d7-8c58-a436df7c7bc8', 'delete', 1, 1, 'something...', 'something...')

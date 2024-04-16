@@ -1,6 +1,5 @@
 package com.vr61v.out.entities.restaurant;
 
-import com.vr61v.out.entities.order.OrderEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +8,6 @@ import lombok.Setter;
 import com.vr61v.out.entities.product.ProductEntity;
 
 import java.sql.Time;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -40,14 +38,10 @@ public class RestaurantEntity {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "menu",
-            joinColumns = @JoinColumn(name = "restaurant", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "product", referencedColumnName = "id")
+            joinColumns = @JoinColumn(name = "restaurant_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id")
     )
     private Set<ProductEntity> menu;
-
-//    @OneToMany(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "restaurant_id")
-//    private List<OrderEntity> orders;
 
     public void addProductInMenu(ProductEntity product) {
         menu.add(product);
