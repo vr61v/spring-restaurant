@@ -22,20 +22,20 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable UUID id) {
+    public ResponseEntity<Product> getProductById(@PathVariable("id") UUID id) {
         Product product = productService.getProductById(id);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> product = productService.getAllProducts();
-        return new ResponseEntity<>(product, HttpStatus.OK);
+        List<Product> products = productService.getAllProducts();
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(
-            @PathVariable UUID id,
+            @PathVariable("id") UUID id,
             @RequestParam(required = false, value = "price") Integer price,
             @RequestParam(required = false, value = "name") String name,
             @RequestParam(required = false, value = "weight") Integer weight,
@@ -48,7 +48,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<UUID> deleteProduct(@PathVariable UUID id) {
+    public ResponseEntity<UUID> deleteProduct(@PathVariable("id") UUID id) {
         productService.deleteProduct(id);
         return new ResponseEntity<>(id, HttpStatus.OK);
     }

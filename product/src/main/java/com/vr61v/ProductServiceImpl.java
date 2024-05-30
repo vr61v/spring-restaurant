@@ -48,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(IllegalArgumentException::new);
 
         if (!validateProductUpdate(product, name, price, weight, category, description, composition)) {
-            throw new IllegalArgumentException("The updated fields must be different from the existing ones.");
+            throw new IllegalArgumentException("the updated fields must be different from the existing ones");
         }
 
         if (name != null) product.setName(name);
@@ -62,8 +62,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public UUID deleteProduct(UUID productId) {
+    public void deleteProduct(UUID productId) {
         productRepository.deleteById(productId);
-        return productId;
     }
 }

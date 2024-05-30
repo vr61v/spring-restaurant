@@ -22,15 +22,15 @@ public class RestaurantController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Restaurant> getRestaurantById(@PathVariable UUID id) {
+    public ResponseEntity<Restaurant> getRestaurantById(@PathVariable("id") UUID id) {
         Restaurant restaurant = restaurantService.getRestaurantById(id);
         return new ResponseEntity<>(restaurant, HttpStatus.OK);
     }
 
     @GetMapping("/restaurants")
     public ResponseEntity<List<Restaurant>> getAllRestaurants() {
-        List<Restaurant> restaurant = restaurantService.getAllRestaurants();
-        return new ResponseEntity<>(restaurant, HttpStatus.OK);
+        List<Restaurant> restaurants = restaurantService.getAllRestaurants();
+        return new ResponseEntity<>(restaurants, HttpStatus.OK);
     }
 
     @PutMapping("/restaurants/{id}")
@@ -57,7 +57,7 @@ public class RestaurantController {
 
     @DeleteMapping("/restaurants/{id}/menu")
     public ResponseEntity<Restaurant> removeProductsFromRestaurant(
-            @PathVariable UUID id,
+            @PathVariable("id") UUID id,
             @RequestParam(required = false, value = "productIds") Set<UUID> productIds
     ) {
         Restaurant update = restaurantService.removeProductsFromRestaurant(id, productIds);
@@ -65,7 +65,7 @@ public class RestaurantController {
     }
 
     @DeleteMapping("/restaurants/{id}")
-    public ResponseEntity<UUID> deleteRestaurant(@PathVariable UUID id) {
+    public ResponseEntity<UUID> deleteRestaurant(@PathVariable("id") UUID id) {
         restaurantService.deleteRestaurant(id);
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
