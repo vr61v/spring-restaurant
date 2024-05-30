@@ -19,6 +19,11 @@
     <modules>
         <module>restaurant-application</module>
         <module>restaurant-infrastructure</module>
+        <module>user</module>
+        <module>card</module>
+        <module>restaurant</module>
+        <module>product</module>
+        <module>order</module>
     </modules>
 
     <properties>
