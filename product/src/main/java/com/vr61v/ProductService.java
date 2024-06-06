@@ -1,5 +1,7 @@
 package com.vr61v;
 
+import com.vr61v.model.Product;
+
 import java.util.List;
 import java.util.UUID;
 

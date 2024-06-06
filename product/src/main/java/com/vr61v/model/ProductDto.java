@@ -1,13 +1,11 @@
-package com.vr61v;
+package com.vr61v.model;
 
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.UUID;
 
 @Data
-@Builder
-public class Product {
+public class ProductDto {
 
     private UUID id;
 

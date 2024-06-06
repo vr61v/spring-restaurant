@@ -1,5 +1,6 @@
 package com.vr61v;
 
+import com.vr61v.model.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProductById(UUID productId) {
-        return productRepository.findById(productId).orElse(null);
+        return productRepository.findById(productId).orElseThrow(IllegalArgumentException::new);
     }
 
     @Override
