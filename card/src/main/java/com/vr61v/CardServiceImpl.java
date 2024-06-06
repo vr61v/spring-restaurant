@@ -1,5 +1,7 @@
 package com.vr61v;
 
+import com.vr61v.model.Card;
+import com.vr61v.model.CardType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

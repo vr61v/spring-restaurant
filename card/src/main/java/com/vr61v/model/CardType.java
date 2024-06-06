@@ -1,4 +1,4 @@
-package com.vr61v;
+package com.vr61v.model;
 
 public enum CardType {
     BRONZE,

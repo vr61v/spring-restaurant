@@ -1,4 +1,4 @@
-package com.vr61v;
+package com.vr61v.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -7,6 +7,7 @@ import java.util.UUID;
 
 @Data
 @Entity
+@Table(schema = "public", name = "card")
 public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

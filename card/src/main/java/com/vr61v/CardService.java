@@ -1,5 +1,8 @@
 package com.vr61v;
 
+import com.vr61v.model.Card;
+import com.vr61v.model.CardType;
+
 import java.util.List;
 import java.util.UUID;
 
