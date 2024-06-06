@@ -26,18 +26,17 @@ public class RestaurantServiceImpl implements RestaurantService {
     ) {
         boolean result = true;
 
-        if (address != null) result = !Objects.equals(restaurant.getAddress(), address);
-        if (phone != null) result = !Objects.equals(restaurant.getPhone(), phone);
-        if (openingHoursFrom != null) result = !Objects.equals(restaurant.getOpeningHoursFrom(), openingHoursFrom);
-        if (openingHoursTo != null) result = !Objects.equals(restaurant.getOpeningHoursTo(), openingHoursTo);
-        if (productIds != null) result = !Objects.equals(restaurant.getMenu(), productIds);
+        if (address != null) result &= !Objects.equals(restaurant.getAddress(), address);
+        if (phone != null) result &= !Objects.equals(restaurant.getPhone(), phone);
+        if (openingHoursFrom != null) result &= !Objects.equals(restaurant.getOpeningHoursFrom(), openingHoursFrom);
+        if (openingHoursTo != null) result &= !Objects.equals(restaurant.getOpeningHoursTo(), openingHoursTo);
+        if (productIds != null) result &= !Objects.equals(restaurant.getMenu(), productIds);
 
         return result;
     }
 
     @Override
     public Restaurant createRestaurant(Restaurant restaurant) {
-        // todo: сделать генерацию id в Restaurant
         restaurant.setId(UUID.randomUUID());
         return restaurantRepository.save(restaurant);
     }
@@ -73,7 +72,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         if (phone != null) restaurant.setPhone(phone);
         if (openingHoursFrom != null) restaurant.setOpeningHoursFrom(openingHoursFrom);
         if (openingHoursTo != null) restaurant.setOpeningHoursTo(openingHoursTo);
-        if (productsIds != null) restaurant.setMenu(restaurant.getMenu());
+        if (productsIds != null) restaurant.setMenu(productsIds);
 
         return restaurantRepository.save(restaurant);
     }

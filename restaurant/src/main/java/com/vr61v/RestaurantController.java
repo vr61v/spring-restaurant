@@ -45,7 +45,6 @@ public class RestaurantController {
                 HttpStatus.OK);
     }
 
-    // todo: Разобраться почему не передается productIds
     @PutMapping("/{id}")
     public ResponseEntity<RestaurantDto> updateRestaurant(
             @PathVariable UUID id,
