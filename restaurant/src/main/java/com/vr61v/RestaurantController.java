@@ -1,12 +1,18 @@
 package com.vr61v;
 
+import com.vr61v.model.Restaurant;
+import com.vr61v.model.RestaurantDto;
+import com.vr61v.model.RestaurantMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Time;
-import java.util.*;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/restaurants")
@@ -14,57 +20,64 @@ import java.util.*;
 public class RestaurantController {
     
     private final RestaurantService restaurantService;
+
+    private final RestaurantMapper restaurantMapper;
     
     @PostMapping
-    public ResponseEntity<Restaurant> createRestaurant(@RequestBody Restaurant restaurant) {
-        Restaurant create = restaurantService.createRestaurant(restaurant);
-        return new ResponseEntity<>(create, HttpStatus.OK);
+    public ResponseEntity<RestaurantDto> createRestaurant(@RequestBody RestaurantDto restaurantDto) {
+        Restaurant restaurant = restaurantService.createRestaurant(restaurantMapper.dtoToEntity(restaurantDto));
+        return new ResponseEntity<>(restaurantMapper.entityToDto(restaurant), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Restaurant> getRestaurantById(@PathVariable("id") UUID id) {
+    public ResponseEntity<RestaurantDto> getRestaurantById(@PathVariable("id") UUID id) {
         Restaurant restaurant = restaurantService.getRestaurantById(id);
-        return new ResponseEntity<>(restaurant, HttpStatus.OK);
+        return new ResponseEntity<>(restaurantMapper.entityToDto(restaurant), HttpStatus.OK);
     }
 
-    @GetMapping("/restaurants")
-    public ResponseEntity<List<Restaurant>> getAllRestaurants() {
+    @GetMapping
+    public ResponseEntity<List<RestaurantDto>> getAllRestaurants() {
         List<Restaurant> restaurants = restaurantService.getAllRestaurants();
-        return new ResponseEntity<>(restaurants, HttpStatus.OK);
+        return new ResponseEntity<>(
+                restaurants.stream()
+                        .map(restaurantMapper::entityToDto)
+                        .collect(Collectors.toList()),
+                HttpStatus.OK);
     }
 
-    @PutMapping("/restaurants/{id}")
-    public ResponseEntity<Restaurant> updateRestaurant(
+    // todo: Разобраться почему не передается productIds
+    @PutMapping("/{id}")
+    public ResponseEntity<RestaurantDto> updateRestaurant(
             @PathVariable UUID id,
             @RequestParam(required = false, value = "address") String address,
             @RequestParam(required = false, value = "phone") String phone,
-            @RequestParam(required = false, value = "openingHoursFrom") Time openingHoursFrom,
-            @RequestParam(required = false, value = "openingHoursTo") Time openingHoursTo,
+            @RequestParam(required = false, value = "openingHoursFrom") LocalTime openingHoursFrom,
+            @RequestParam(required = false, value = "openingHoursTo") LocalTime openingHoursTo,
             @RequestParam(required = false, value = "productIds") Set<UUID> productIds
     ) {
-        Restaurant update = restaurantService.updateRestaurant(id, address, phone, openingHoursFrom, openingHoursTo, productIds);
-        return new ResponseEntity<>(update, HttpStatus.OK);
+        Restaurant restaurant = restaurantService.updateRestaurant(id, address, phone, openingHoursFrom, openingHoursTo, productIds);
+        return new ResponseEntity<>(restaurantMapper.entityToDto(restaurant), HttpStatus.OK);
     }
 
-    @PostMapping("/restaurants/{id}/menu")
-    public ResponseEntity<Restaurant> addProductsInRestaurant(
+    @PostMapping("/{id}/menu")
+    public ResponseEntity<RestaurantDto> addProductsInRestaurant(
             @PathVariable UUID id,
             @RequestParam(required = false, value = "productIds") Set<UUID> productIds
     ) {
-        Restaurant update = restaurantService.addProductsInRestaurant(id, productIds);
-        return new ResponseEntity<>(update, HttpStatus.OK);
+        Restaurant restaurant = restaurantService.addProductsInRestaurant(id, productIds);
+        return new ResponseEntity<>(restaurantMapper.entityToDto(restaurant), HttpStatus.OK);
     }
 
-    @DeleteMapping("/restaurants/{id}/menu")
-    public ResponseEntity<Restaurant> removeProductsFromRestaurant(
+    @DeleteMapping("/{id}/menu")
+    public ResponseEntity<RestaurantDto> removeProductsFromRestaurant(
             @PathVariable("id") UUID id,
             @RequestParam(required = false, value = "productIds") Set<UUID> productIds
     ) {
-        Restaurant update = restaurantService.removeProductsFromRestaurant(id, productIds);
-        return new ResponseEntity<>(update, HttpStatus.OK);
+        Restaurant restaurant = restaurantService.removeProductsFromRestaurant(id, productIds);
+        return new ResponseEntity<>(restaurantMapper.entityToDto(restaurant), HttpStatus.OK);
     }
 
-    @DeleteMapping("/restaurants/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<UUID> deleteRestaurant(@PathVariable("id") UUID id) {
         restaurantService.deleteRestaurant(id);
         return new ResponseEntity<>(id, HttpStatus.OK);

@@ -1,10 +1,14 @@
 package com.vr61v;
 
+import com.vr61v.model.Restaurant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
-import java.util.*;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -12,7 +16,14 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
 
-    private static boolean validateRestaurantUpdate(Restaurant restaurant, String address, String phone, Time openingHoursFrom, Time openingHoursTo, Set<UUID> productIds) {
+    private static boolean validateRestaurantUpdate(
+            Restaurant restaurant,
+            String address,
+            String phone,
+            LocalTime openingHoursFrom,
+            LocalTime openingHoursTo,
+            Set<UUID> productIds
+    ) {
         boolean result = true;
 
         if (address != null) result = !Objects.equals(restaurant.getAddress(), address);
@@ -26,6 +37,8 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public Restaurant createRestaurant(Restaurant restaurant) {
+        // todo: сделать генерацию id в Restaurant
+        restaurant.setId(UUID.randomUUID());
         return restaurantRepository.save(restaurant);
     }
 
@@ -40,7 +53,14 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public Restaurant updateRestaurant(UUID restaurantId, String address, String phone, Time openingHoursFrom, Time openingHoursTo, Set<UUID> productsIds) {
+    public Restaurant updateRestaurant(
+            UUID restaurantId,
+            String address,
+            String phone,
+            LocalTime openingHoursFrom,
+            LocalTime openingHoursTo,
+            Set<UUID> productsIds
+    ) {
         Restaurant restaurant = restaurantRepository
                 .findById(restaurantId)
                 .orElseThrow(IllegalArgumentException::new);

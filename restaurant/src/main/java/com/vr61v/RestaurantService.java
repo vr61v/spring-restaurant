@@ -1,6 +1,8 @@
 package com.vr61v;
 
-import java.sql.Time;
+import com.vr61v.model.Restaurant;
+
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -13,7 +15,7 @@ public interface RestaurantService {
 
     List<Restaurant> getAllRestaurants();
 
-    Restaurant updateRestaurant(UUID restaurantId, String address, String phone, Time openingHoursFrom, Time openingHoursTo, Set<UUID> productsIds);
+    Restaurant updateRestaurant(UUID restaurantId, String address, String phone, LocalTime openingHoursFrom, LocalTime openingHoursTo, Set<UUID> productsIds);
 
     Restaurant addProductsInRestaurant(UUID restaurantId, Set<UUID> productIds);
 
