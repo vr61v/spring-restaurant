@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/cards")
@@ -36,7 +37,11 @@ public class CardController {
     @GetMapping
     public ResponseEntity<List<CardDto>> getCards() {
         List<Card> cards = cardService.getAllCards();
-        return new ResponseEntity<>(cards.stream().map(cardMapper::entityToDto).toList(), HttpStatus.OK);
+        return new ResponseEntity<>(
+                cards.stream()
+                        .map(cardMapper::entityToDto)
+                        .collect(Collectors.toList()),
+                HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
