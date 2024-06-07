@@ -1,9 +1,9 @@
 package com.vr61v;
 
-import com.vr61v.model.request.CreateProductRequest;
 import com.vr61v.model.Product;
 import com.vr61v.model.ProductDto;
 import com.vr61v.model.ProductMapper;
+import com.vr61v.model.request.CreateProductRequest;
 import com.vr61v.model.request.UpdateProductRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -65,6 +65,7 @@ public class ProductController {
             log.warn("Failed to update product: {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        log.info("Updated product: {}", product);
         return new ResponseEntity<>(productMapper.entityToDto(product), HttpStatus.OK);
     }
 

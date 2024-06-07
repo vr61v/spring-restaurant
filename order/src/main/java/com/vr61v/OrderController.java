@@ -6,6 +6,7 @@ import com.vr61v.model.OrderMapper;
 import com.vr61v.model.OrderState;
 import com.vr61v.model.request.CreateOrderRequest;
 import com.vr61v.model.request.UpdateOrderRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class OrderController {
     private final OrderMapper orderMapper;
 
     @PostMapping
-    public ResponseEntity<OrderDto> createOrder(@RequestBody CreateOrderRequest createOrderRequest) {
+    public ResponseEntity<OrderDto> createOrder(@Valid @RequestBody CreateOrderRequest createOrderRequest) {
         Order order = orderService.createOrder(createOrderRequest);
         log.info("Created order: {}", order);
         return new ResponseEntity<>(orderMapper.entityToDto(order), HttpStatus.OK);
@@ -54,7 +55,9 @@ public class OrderController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<OrderDto> updateOrder(@PathVariable("id") UUID id, @RequestBody UpdateOrderRequest updateOrderRequest) {
+    public ResponseEntity<OrderDto> updateOrder(
+            @PathVariable("id") UUID id,
+            @Valid @RequestBody UpdateOrderRequest updateOrderRequest) {
         Order order;
         try {
             order = orderService.updateOrder(id, updateOrderRequest);

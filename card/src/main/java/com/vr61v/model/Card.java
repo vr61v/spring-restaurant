@@ -1,11 +1,13 @@
 package com.vr61v.model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.UUID;
 
 @Data
+@Builder
 @Entity
 @Table(schema = "public", name = "card")
 public class Card {
@@ -26,4 +28,8 @@ public class Card {
 
     @Column(name = "discount")
     private Float discount;
+
+    public Card() {
+        
+    }
 }
