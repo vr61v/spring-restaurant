@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Data
 @Builder
-@Document(collection = "restaurants")
+@Document(collection = "restaurant")
 public class Restaurant {
 
     @Id

@@ -1,21 +1,22 @@
 package com.vr61v;
 
 import com.vr61v.model.Restaurant;
+import com.vr61v.model.request.CreateRestaurantRequest;
+import com.vr61v.model.request.UpdateRestaurantRequest;
 
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 public interface RestaurantService {
 
-    Restaurant createRestaurant(Restaurant restaurant);
+    Restaurant createRestaurant(CreateRestaurantRequest createRestaurantRequest);
 
     Restaurant getRestaurantById(UUID restaurantId);
 
     List<Restaurant> getAllRestaurants();
 
-    Restaurant updateRestaurant(UUID restaurantId, String address, String phone, LocalTime openingHoursFrom, LocalTime openingHoursTo, Set<UUID> productsIds);
+    Restaurant updateRestaurant(UUID restaurantId, UpdateRestaurantRequest updateRestaurantRequest);
 
     Restaurant addProductsInRestaurant(UUID restaurantId, Set<UUID> productIds);
 

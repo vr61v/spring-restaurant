@@ -1,6 +1,8 @@
 package com.vr61v;
 
 import com.vr61v.model.Restaurant;
+import com.vr61v.model.request.CreateRestaurantRequest;
+import com.vr61v.model.request.UpdateRestaurantRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,28 +18,29 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
 
-    private static boolean validateRestaurantUpdate(
-            Restaurant restaurant,
-            String address,
-            String phone,
-            LocalTime openingHoursFrom,
-            LocalTime openingHoursTo,
-            Set<UUID> productIds
-    ) {
+    private static boolean validateRestaurantUpdate(Restaurant restaurant, UpdateRestaurantRequest updateRestaurantRequest) {
         boolean result = true;
 
-        if (address != null) result &= !Objects.equals(restaurant.getAddress(), address);
-        if (phone != null) result &= !Objects.equals(restaurant.getPhone(), phone);
-        if (openingHoursFrom != null) result &= !Objects.equals(restaurant.getOpeningHoursFrom(), openingHoursFrom);
-        if (openingHoursTo != null) result &= !Objects.equals(restaurant.getOpeningHoursTo(), openingHoursTo);
-        if (productIds != null) result &= !Objects.equals(restaurant.getMenu(), productIds);
+        if (updateRestaurantRequest.address() != null) result &= !Objects.equals(restaurant.getAddress(), updateRestaurantRequest.address());
+        if (updateRestaurantRequest.phone() != null) result &= !Objects.equals(restaurant.getPhone(), updateRestaurantRequest.phone());
+        if (updateRestaurantRequest.openingHoursFrom() != null) result &= !Objects.equals(restaurant.getOpeningHoursFrom(), updateRestaurantRequest.openingHoursFrom());
+        if (updateRestaurantRequest.openingHoursTo() != null) result &= !Objects.equals(restaurant.getOpeningHoursTo(), updateRestaurantRequest.openingHoursTo());
+        if (updateRestaurantRequest.menu() != null) result &= !Objects.equals(restaurant.getMenu(), updateRestaurantRequest.menu());
 
         return result;
     }
 
     @Override
-    public Restaurant createRestaurant(Restaurant restaurant) {
-        restaurant.setId(UUID.randomUUID());
+    public Restaurant createRestaurant(CreateRestaurantRequest createRestaurantRequest) {
+        Restaurant restaurant = Restaurant.builder()
+                .id(UUID.randomUUID())
+                .address(createRestaurantRequest.address())
+                .phone(createRestaurantRequest.phone())
+                .openingHoursFrom(createRestaurantRequest.openingHoursFrom())
+                .openingHoursTo(createRestaurantRequest.openingHoursTo())
+                .menu(createRestaurantRequest.menu())
+                .build();
+
         return restaurantRepository.save(restaurant);
     }
 
@@ -52,27 +55,20 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public Restaurant updateRestaurant(
-            UUID restaurantId,
-            String address,
-            String phone,
-            LocalTime openingHoursFrom,
-            LocalTime openingHoursTo,
-            Set<UUID> productsIds
-    ) {
+    public Restaurant updateRestaurant(UUID restaurantId, UpdateRestaurantRequest updateRestaurantRequest ) {
         Restaurant restaurant = restaurantRepository
                 .findById(restaurantId)
                 .orElseThrow(IllegalArgumentException::new);
 
-        if (!validateRestaurantUpdate(restaurant, address, phone, openingHoursFrom, openingHoursTo, productsIds)) {
+        if (!validateRestaurantUpdate(restaurant, updateRestaurantRequest)) {
             throw new IllegalArgumentException("the updated fields must be different from the existing ones");
         }
 
-        if (address != null) restaurant.setAddress(address);
-        if (phone != null) restaurant.setPhone(phone);
-        if (openingHoursFrom != null) restaurant.setOpeningHoursFrom(openingHoursFrom);
-        if (openingHoursTo != null) restaurant.setOpeningHoursTo(openingHoursTo);
-        if (productsIds != null) restaurant.setMenu(productsIds);
+        if (updateRestaurantRequest.address() != null) restaurant.setAddress(updateRestaurantRequest.address());
+        if (updateRestaurantRequest.phone() != null) restaurant.setPhone(updateRestaurantRequest.phone());
+        if (updateRestaurantRequest.openingHoursFrom() != null) restaurant.setOpeningHoursFrom(updateRestaurantRequest.openingHoursFrom());
+        if (updateRestaurantRequest.openingHoursTo() != null) restaurant.setOpeningHoursTo(updateRestaurantRequest.openingHoursTo());
+        if (updateRestaurantRequest.menu() != null) restaurant.setMenu(updateRestaurantRequest.menu());
 
         return restaurantRepository.save(restaurant);
     }
