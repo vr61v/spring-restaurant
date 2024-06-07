@@ -20,10 +20,10 @@ public class Product {
     private String name;
 
     @Field(value = "price")
-    private Integer price;
+    private Double price;
 
     @Field(value = "weight")
-    private Integer weight;
+    private Double weight;
 
     @Field(value = "category")
     private String category;

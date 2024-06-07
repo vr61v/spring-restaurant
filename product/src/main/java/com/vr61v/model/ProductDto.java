@@ -11,9 +11,9 @@ public class ProductDto {
 
     private String name;
 
-    private Integer price;
+    private Double price;
 
-    private Integer weight;
+    private Double weight;
 
     private String category;
 
