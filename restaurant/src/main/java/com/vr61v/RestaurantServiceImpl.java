@@ -6,7 +6,6 @@ import com.vr61v.model.request.UpdateRestaurantRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;

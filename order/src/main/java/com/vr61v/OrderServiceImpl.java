@@ -10,18 +10,15 @@ import com.vr61v.model.request.UpdateOrderRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
-    private final ProductService productService;
-
     private final OrderRepository orderRepository;
+
+    private final ProductService productService;
 
     private boolean validateOrderUpdate(Order order, UpdateOrderRequest updateOrderRequest) {
         boolean result = true;
@@ -37,6 +34,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order createOrder(CreateOrderRequest createOrderRequest) {
         Order order = Order.builder()
+                .id(UUID.randomUUID())
                 .userId(createOrderRequest.userId())
                 .restaurantId(createOrderRequest.restaurantId())
                 .date(createOrderRequest.date())
@@ -44,7 +42,10 @@ public class OrderServiceImpl implements OrderService {
                 .state(createOrderRequest.state())
                 .build();
 
-        Map<UUID, Integer> productsIds = createOrderRequest.products();
+        Map<UUID, Integer> productsIds = new HashMap<>();
+        createOrderRequest.details().forEach(detail -> productsIds.put(detail.productId(), detail.quantity()));
+
+        // todo: сделать обращение к микросервису продуктов через очередь сообщений
         List<Product> products = productService.getProductsById(productsIds.keySet().stream().toList());
         for (Product product : products) {
             order.addProduct(product, productsIds.get(product.getId()));
@@ -78,8 +79,11 @@ public class OrderServiceImpl implements OrderService {
         if (updateOrderRequest.date() != null) order.setDate(updateOrderRequest.date());
         if (updateOrderRequest.comment() != null) order.setComment(updateOrderRequest.comment());
 
-        if (updateOrderRequest.products() != null) {
-            Map<UUID, Integer> productsIds = updateOrderRequest.products();
+        if (updateOrderRequest.details() != null) {
+            // todo: сделать обращение к микросервису продуктов через очередь сообщений
+            Map<UUID, Integer> productsIds = new HashMap<>();
+            updateOrderRequest.details().forEach(detail -> productsIds.put(detail.productId(), detail.quantity()));
+
             List<Product> products = productService.getProductsById(productsIds.keySet().stream().toList());
             for (Product product : products) {
                 order.addProduct(product, productsIds.get(product.getId()));
@@ -95,7 +99,7 @@ public class OrderServiceImpl implements OrderService {
                 .findById(orderId)
                 .orElseThrow(IllegalArgumentException::new);
 
-        if (order.getState().compareTo(state) < 0) {
+        if (order.getState().compareTo(state) >= 0) {
             throw new IllegalOrderStateChangeException("the order status cannot be changed");
         }
 

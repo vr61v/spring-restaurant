@@ -1,6 +1,7 @@
 package com.vr61v.model.request;
 
 import com.vr61v.model.CardType;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -12,12 +13,12 @@ public record CreateCardRequest (
         @NotNull
         UUID userId,
 
-        @Pattern(regexp = "^[0-9]{16}&")
+        @Pattern(regexp = "^[0-9]{16}$")
         String number,
 
         CardType type,
 
-        @Min(0)
+        @Min(0) @Max(1)
         Float discount
         
 ) {

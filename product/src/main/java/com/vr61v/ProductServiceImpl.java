@@ -46,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProductById(UUID productId) {
-        return productRepository.findById(productId).orElseThrow(IllegalArgumentException::new);
+        return productRepository.findById(productId).orElse(null);
     }
 
     @Override

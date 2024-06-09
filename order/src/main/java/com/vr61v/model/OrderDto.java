@@ -2,8 +2,8 @@ package com.vr61v.model;
 
 import lombok.Data;
 
-import java.util.Calendar;
-import java.util.Map;
+import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -15,12 +15,12 @@ public class OrderDto {
 
     private UUID restaurantId;
 
-    private Calendar date;
+    private Date date;
 
     private String comment;
 
     private OrderState state;
 
-    private Map<UUID, Integer> details;
+    private Set<Detail> details;
 
 }

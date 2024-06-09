@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
@@ -25,7 +25,7 @@ public class Order {
     private UUID restaurantId;
 
     @Field(value = "date")
-    private Calendar date;
+    private Date date;
 
     @Field(value = "comment")
     private String comment;

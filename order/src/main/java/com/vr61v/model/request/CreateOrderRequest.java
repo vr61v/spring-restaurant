@@ -1,12 +1,13 @@
 package com.vr61v.model.request;
 
+import com.vr61v.model.Detail;
 import com.vr61v.model.OrderState;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.Calendar;
-import java.util.Map;
+import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 public record CreateOrderRequest(
@@ -18,7 +19,7 @@ public record CreateOrderRequest(
         UUID restaurantId,
 
         @NotNull
-        Calendar date,
+        Date date,
 
         @NotBlank
         String comment,
@@ -26,7 +27,7 @@ public record CreateOrderRequest(
         OrderState state,
 
         @NotNull @NotEmpty
-        Map<UUID, Integer> products
+        Set<Detail> details
 
 ) {
 

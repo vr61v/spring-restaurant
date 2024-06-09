@@ -1,9 +1,9 @@
 package com.vr61v.model.request;
 
-import jakarta.validation.constraints.NotBlank;
+import com.vr61v.model.Detail;
 
-import java.util.Calendar;
-import java.util.Map;
+import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 public record UpdateOrderRequest(
@@ -12,12 +12,11 @@ public record UpdateOrderRequest(
 
         UUID restaurantId,
 
-        Calendar date,
+        Date date,
 
-        @NotBlank
         String comment,
 
-        Map<UUID, Integer>products
+        Set<Detail> details
 
 ) {
 }
