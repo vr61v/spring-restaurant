@@ -2,11 +2,14 @@ package com.vr61v;
 
 import com.vr61v.exceptions.IllegalOrderStateChangeException;
 import com.vr61v.exceptions.NotEnoughMoneyException;
-import com.vr61v.model.Order;
-import com.vr61v.model.OrderState;
-import com.vr61v.model.Product;
+import com.vr61v.model.order.Order;
+import com.vr61v.model.order.OrderState;
+import com.vr61v.model.product.Detail;
+import com.vr61v.model.product.Product;
+import com.vr61v.model.product.ProductMapper;
 import com.vr61v.model.request.CreateOrderRequest;
 import com.vr61v.model.request.UpdateOrderRequest;
+import com.vr61v.product.ProductClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +20,8 @@ import java.util.*;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-
-    private final ProductService productService;
+    private final ProductClient productClient;
+    private final ProductMapper productMapper;
 
     private boolean validateOrderUpdate(Order order, UpdateOrderRequest updateOrderRequest) {
         boolean result = true;
@@ -40,15 +43,17 @@ public class OrderServiceImpl implements OrderService {
                 .date(createOrderRequest.date())
                 .comment(createOrderRequest.comment())
                 .state(createOrderRequest.state())
+                .details(new HashSet<>())
                 .build();
 
-        Map<UUID, Integer> productsIds = new HashMap<>();
-        createOrderRequest.details().forEach(detail -> productsIds.put(detail.productId(), detail.quantity()));
 
-        // todo: сделать обращение к микросервису продуктов через очередь сообщений
-        List<Product> products = productService.getProductsById(productsIds.keySet().stream().toList());
+        Map<UUID, Integer> productsQuantity = createOrderRequest.products();
+
+        List<Product> products = Objects.requireNonNull(
+                productClient.getProductsById(productsQuantity.keySet().stream().toList()).getBody())
+                .stream().map(productMapper::dtoToEntity).toList();
         for (Product product : products) {
-            order.addProduct(product, productsIds.get(product.getId()));
+            order.addDetail(new Detail(product, productsQuantity.get(product.getId())));
         }
 
         return orderRepository.save(order);
@@ -79,14 +84,14 @@ public class OrderServiceImpl implements OrderService {
         if (updateOrderRequest.date() != null) order.setDate(updateOrderRequest.date());
         if (updateOrderRequest.comment() != null) order.setComment(updateOrderRequest.comment());
 
-        if (updateOrderRequest.details() != null) {
-            // todo: сделать обращение к микросервису продуктов через очередь сообщений
-            Map<UUID, Integer> productsIds = new HashMap<>();
-            updateOrderRequest.details().forEach(detail -> productsIds.put(detail.productId(), detail.quantity()));
+        if (updateOrderRequest.products() != null) {
+            Map<UUID, Integer> productsQuantity = updateOrderRequest.products();
 
-            List<Product> products = productService.getProductsById(productsIds.keySet().stream().toList());
+            List<Product> products = Objects.requireNonNull(
+                    productClient.getProductsById(productsQuantity.keySet().stream().toList()).getBody())
+                    .stream().map(productMapper::dtoToEntity).toList();
             for (Product product : products) {
-                order.addProduct(product, productsIds.get(product.getId()));
+                order.addDetail(new Detail(product, productsQuantity.get(product.getId())));
             }
         }
 
@@ -119,8 +124,8 @@ public class OrderServiceImpl implements OrderService {
         }
 
         double total = 0d;
-        for (var product : order.getProducts().entrySet()) {
-            total += product.getKey().getPrice() * product.getValue();
+        for (var detail : order.getDetails()) {
+            total += detail.product().getPrice() * detail.quantity();
         }
 
         if (total > amount) {

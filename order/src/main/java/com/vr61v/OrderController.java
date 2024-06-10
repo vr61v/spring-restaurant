@@ -1,9 +1,9 @@
 package com.vr61v;
 
-import com.vr61v.model.Order;
-import com.vr61v.model.OrderDto;
-import com.vr61v.model.OrderMapper;
-import com.vr61v.model.OrderState;
+import com.vr61v.model.order.Order;
+import com.vr61v.model.order.OrderDto;
+import com.vr61v.model.order.OrderMapper;
+import com.vr61v.model.order.OrderState;
 import com.vr61v.model.request.CreateOrderRequest;
 import com.vr61v.model.request.UpdateOrderRequest;
 import jakarta.validation.Valid;
@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 public class OrderController {
 
     private final OrderService orderService;
-
     private final OrderMapper orderMapper;
 
     @PostMapping

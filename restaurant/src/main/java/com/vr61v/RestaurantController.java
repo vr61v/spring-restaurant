@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 public class RestaurantController {
     
     private final RestaurantService restaurantService;
-
     private final RestaurantMapper restaurantMapper;
     
     @PostMapping

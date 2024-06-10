@@ -2,8 +2,8 @@ package com.vr61v;
 
 import com.vr61v.exceptions.IllegalOrderStateChangeException;
 import com.vr61v.exceptions.NotEnoughMoneyException;
-import com.vr61v.model.Order;
-import com.vr61v.model.OrderState;
+import com.vr61v.model.order.Order;
+import com.vr61v.model.order.OrderState;
 import com.vr61v.model.request.CreateOrderRequest;
 import com.vr61v.model.request.UpdateOrderRequest;
 

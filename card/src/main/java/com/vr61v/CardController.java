@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 public class CardController {
 
     private final CardService cardService;
-
     private final CardMapper cardMapper;
 
     @PostMapping

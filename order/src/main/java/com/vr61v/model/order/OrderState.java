@@ -1,4 +1,4 @@
-package com.vr61v.model;
+package com.vr61v.model.order;
 
 public enum OrderState {
     CREATE,

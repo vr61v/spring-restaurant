@@ -1,6 +1,6 @@
 package com.vr61v;
 
-import com.vr61v.model.Order;
+import com.vr61v.model.order.Order;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

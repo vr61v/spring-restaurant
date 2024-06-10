@@ -1,9 +1,7 @@
 package com.vr61v.model.request;
 
-import com.vr61v.model.Detail;
-
 import java.util.Date;
-import java.util.Set;
+import java.util.Map;
 import java.util.UUID;
 
 public record UpdateOrderRequest(
@@ -16,7 +14,7 @@ public record UpdateOrderRequest(
 
         String comment,
 
-        Set<Detail> details
+        Map<UUID, Integer> products
 
 ) {
 }

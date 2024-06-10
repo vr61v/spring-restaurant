@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 public class ProductController {
 
     private final ProductService productService;
-
     private final ProductMapper productMapper;
     
     @PostMapping
@@ -39,6 +38,14 @@ public class ProductController {
         log.info("Retrieved product: {}", product);
         if (product == null) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(productMapper.entityToDto(product), HttpStatus.OK);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<List<ProductDto>> getProductsById(@RequestParam("productIds") List<UUID> productIds) {
+        List<Product> products = productService.getProductsById(productIds);
+        log.info("Retrieved products: {}", products);
+        if (products == null) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(products.stream().map(productMapper::entityToDto).collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @GetMapping

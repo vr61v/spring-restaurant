@@ -21,6 +21,7 @@
         <module>restaurant</module>
         <module>product</module>
         <module>order</module>
+        <module>clients</module>
     </modules>
 
     <properties>

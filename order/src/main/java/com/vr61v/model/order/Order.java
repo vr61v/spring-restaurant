@@ -1,17 +1,22 @@
-package com.vr61v.model;
+package com.vr61v.model.order;
 
+import com.vr61v.model.product.Detail;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
-import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Document(collection = "order")
 public class Order {
 
@@ -33,15 +38,15 @@ public class Order {
     @Field(value = "state")
     private OrderState state;
 
-    @Field(value = "products")
-    private Map<Product, Integer> products;
+    @Field(value = "details")
+    private Set<Detail> details;
 
-    public void addProduct(Product product, Integer quantity) {
-        products.put(product, products.getOrDefault(product, 0) + quantity);
+    public void addDetail(Detail detail) {
+        details.add(detail);
     }
 
-    public void removeDetail(Product product) {
-        products.remove(product);
+    public void removeDetail(Detail detail) {
+        details.remove(detail);
     }
 
 }
