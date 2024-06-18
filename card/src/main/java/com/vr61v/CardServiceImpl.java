@@ -4,6 +4,9 @@ import com.vr61v.model.Card;
 import com.vr61v.model.request.CreateCardRequest;
 import com.vr61v.model.request.UpdateCardRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +31,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    @PreAuthorize("hasRole(\"ADMIN\")")
     public Card createCard(CreateCardRequest createCardRequest) {
         Card card = Card.builder()
                 .userId(createCardRequest.userId())
@@ -39,16 +43,22 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    @PostAuthorize("returnObject == null || " +
+            "hasRole(\"CUSTOMER\") && returnObject.userId.toString() == authentication.principal.getAttribute(\"sub\") || " +
+            "hasRole(\"ADMIN\")")
     public Card getCardById(UUID cardId) {
         return cardRepository.findById(cardId).orElse(null);
     }
 
     @Override
+    @PostFilter("hasRole(\"CUSTOMER\") && filterObject.userId.toString() == authentication.principal.getAttribute(\"sub\") || " +
+            "hasRole(\"ADMIN\")")
     public List<Card> getAllCards() {
         return cardRepository.findAll();
     }
 
     @Override
+    @PreAuthorize("hasRole(\"ADMIN\")")
     public Card updateCard(UUID cardId, UpdateCardRequest updateCardRequest) {
         Card product = cardRepository
                 .findById(cardId)
@@ -67,6 +77,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole(\"CUSTOMER\", \"ADMIN\")")
     public void deleteCard(UUID cardId) {
         cardRepository.deleteById(cardId);
     }
