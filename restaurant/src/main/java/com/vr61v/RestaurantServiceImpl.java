@@ -4,6 +4,7 @@ import com.vr61v.model.Restaurant;
 import com.vr61v.model.request.CreateRestaurantRequest;
 import com.vr61v.model.request.UpdateRestaurantRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    @PreAuthorize("isAuthenticated() && hasRole(\"ADMIN\")")
     public Restaurant createRestaurant(CreateRestaurantRequest createRestaurantRequest) {
         Restaurant restaurant = Restaurant.builder()
                 .id(UUID.randomUUID())
@@ -54,6 +56,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    @PreAuthorize("isAuthenticated() && hasRole(\"ADMIN\")")
     public Restaurant updateRestaurant(UUID restaurantId, UpdateRestaurantRequest updateRestaurantRequest ) {
         Restaurant restaurant = restaurantRepository
                 .findById(restaurantId)
@@ -73,6 +76,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    @PreAuthorize("isAuthenticated() && hasRole(\"ADMIN\")")
     public Restaurant addProductsInRestaurant(UUID restaurantId, Set<UUID> productsIds) {
         Restaurant restaurant = restaurantRepository
                 .findById(restaurantId)
@@ -84,6 +88,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    @PreAuthorize("isAuthenticated() && hasRole(\"ADMIN\")")
     public Restaurant removeProductsFromRestaurant(UUID restaurantId, Set<UUID> productsIds) {
         Restaurant restaurant = restaurantRepository
                 .findById(restaurantId)
@@ -95,6 +100,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    @PreAuthorize("isAuthenticated() && hasRole(\"ADMIN\")")
     public void deleteRestaurant(UUID restaurantId) {
         restaurantRepository.deleteById(restaurantId);
     }
