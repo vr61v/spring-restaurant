@@ -26,33 +26,41 @@ public class ProductController {
     private final ProductMapper productMapper;
     
     @PostMapping
-    public ResponseEntity<ProductDto> createProduct(@Valid @RequestBody CreateProductRequest createProductRequest) {
-        Product product = productService.createProduct(createProductRequest);
+    public ResponseEntity<?> createProduct(@Valid @RequestBody CreateProductRequest createProductRequest) {
+        Product product;
+        try {
+            product = productService.createProduct(createProductRequest);
+        } catch (Exception e) {
+            log.error("Error create product {}", e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
         log.info("Created product: {}", product);
         return new ResponseEntity<>(productMapper.entityToDto(product), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDto> getProductById(@PathVariable("id") UUID id) {
+    public ResponseEntity<?> getProductById(@PathVariable("id") UUID id) {
         Product product = productService.getProductById(id);
         log.info("Retrieved product: {}", product);
-        if (product == null) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        if (product == null) return new ResponseEntity<>("The product with id:" + id + " was not found", HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(productMapper.entityToDto(product), HttpStatus.OK);
     }
 
     @GetMapping("/")
     public ResponseEntity<List<ProductDto>> getProductsById(@RequestParam("productIds") List<UUID> productIds) {
         List<Product> products = productService.getProductsById(productIds);
-        log.info("Retrieved products: {}", products);
-        if (products == null) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        return new ResponseEntity<>(products.stream().map(productMapper::entityToDto).collect(Collectors.toList()), HttpStatus.OK);
+        log.info("Retrieved products by id: {}", products);
+        return new ResponseEntity<>(
+                products.stream()
+                        .map(productMapper::entityToDto)
+                        .collect(Collectors.toList()),
+                HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<ProductDto>> getAllProducts() {
         List<Product> products = productService.getAllProducts();
         log.info("Retrieved products: {}", products);
-        if (products.isEmpty()) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(
                 products.stream()
                         .map(productMapper::entityToDto)
@@ -62,23 +70,28 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDto> updateProduct(
+    public ResponseEntity<?> updateProduct(
             @PathVariable("id") UUID id,
             @Valid @RequestBody UpdateProductRequest updateProductRequest) {
         Product product;
         try {
             product = productService.updateProduct(id, updateProductRequest);
         } catch (Exception e) {
-            log.warn("Failed to update product: {}", e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            log.error("Error update product: {}", e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         log.info("Updated product: {}", product);
         return new ResponseEntity<>(productMapper.entityToDto(product), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<UUID> deleteProduct(@PathVariable("id") UUID id) {
-        productService.deleteProduct(id);
+    public ResponseEntity<?> deleteProduct(@PathVariable("id") UUID id) {
+        try {
+            productService.deleteProduct(id);
+        } catch (Exception e) {
+            log.error("Error delete product: {}", e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
         log.info("Deleted product: {}", id);
         return new ResponseEntity<>(id, HttpStatus.OK);
     }

@@ -4,6 +4,7 @@ import com.vr61v.model.Product;
 import com.vr61v.model.request.CreateProductRequest;
 import com.vr61v.model.request.UpdateProductRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @PreAuthorize("isAuthenticated() && hasRole(\"ADMIN\")")
     public Product createProduct(CreateProductRequest createProductRequest) {
         Product product = Product.builder()
                 .id(UUID.randomUUID())
@@ -60,6 +62,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @PreAuthorize("isAuthenticated() && hasRole(\"ADMIN\")")
     public Product updateProduct(UUID productId, UpdateProductRequest updateProductRequest) {
         Product product = productRepository
                 .findById(productId)
@@ -80,6 +83,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @PreAuthorize("isAuthenticated() && hasRole(\"ADMIN\")")
     public void deleteProduct(UUID productId) {
         productRepository.deleteById(productId);
     }

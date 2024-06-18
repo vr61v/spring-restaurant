@@ -31,6 +31,7 @@ public class CardController {
         try {
             card = cardService.createCard(createCardRequest);
         } catch (Exception e) {
+            log.error("Error create card: {}", e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         log.info("Created card: {}", card);
@@ -41,7 +42,7 @@ public class CardController {
     public ResponseEntity<?> getCard(@PathVariable("id") UUID id) {
         Card card = cardService.getCardById(id);
         log.info("Retrieved card: {}", card);
-        if (card == null) return new ResponseEntity<>("The card with " + id + " was not found", HttpStatus.BAD_REQUEST);
+        if (card == null) return new ResponseEntity<>("The card with id:" + id + " was not found", HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(cardMapper.entityToDto(card), HttpStatus.OK);
     }
 
@@ -65,6 +66,7 @@ public class CardController {
         try {
             card = cardService.updateCard(id, updateCardRequest);
         } catch (IllegalArgumentException e) {
+            log.error("Error update card: {}", e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         log.info("Updated card: {}", card);
@@ -76,6 +78,7 @@ public class CardController {
         try {
             cardService.deleteCard(id);
         } catch (IllegalArgumentException e) {
+            log.error("Error delete card: {}", e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         log.info("Deleted card: {}", id);
