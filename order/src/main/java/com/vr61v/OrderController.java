@@ -27,17 +27,23 @@ public class OrderController {
     private final OrderMapper orderMapper;
 
     @PostMapping
-    public ResponseEntity<OrderDto> createOrder(@Valid @RequestBody CreateOrderRequest createOrderRequest) {
-        Order order = orderService.createOrder(createOrderRequest);
+    public ResponseEntity<?> createOrder(@Valid @RequestBody CreateOrderRequest createOrderRequest) {
+        Order order;
+        try {
+            order = orderService.createOrder(createOrderRequest);
+        } catch (Exception e) {
+            log.error("Error create order {}", e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
         log.info("Created order: {}", order);
         return new ResponseEntity<>(orderMapper.entityToDto(order), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderDto> getOrderById(@PathVariable("id") UUID id) {
+    public ResponseEntity<?> getOrderById(@PathVariable("id") UUID id) {
         Order order = orderService.getOrder(id);
         log.info("Retrieved order: {}", order);
-        if (order == null) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        if (order == null) return new ResponseEntity<>("The order with id:" + id + " was not found", HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(orderMapper.entityToDto(order), HttpStatus.OK);
     }
 
@@ -45,7 +51,6 @@ public class OrderController {
     public ResponseEntity<List<OrderDto>> getOrders() {
         List<Order> orders = orderService.getOrders();
         log.info("Retrieved orders: {}", orders);
-        if (orders.isEmpty()) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(
                 orders.stream()
                         .map(orderMapper::entityToDto)
@@ -54,53 +59,53 @@ public class OrderController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<OrderDto> updateOrder(
+    public ResponseEntity<?> updateOrder(
             @PathVariable("id") UUID id,
             @Valid @RequestBody UpdateOrderRequest updateOrderRequest) {
         Order order;
         try {
             order = orderService.updateOrder(id, updateOrderRequest);
         } catch (Exception e) {
-            log.warn("Failed to update order: {}", e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            log.error("Error update order: {}", e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         log.info("Updated order: {}", order);
         return new ResponseEntity<>(orderMapper.entityToDto(order), HttpStatus.OK);
     }
 
     @PatchMapping("/{id}/state")
-    public ResponseEntity<OrderDto> updateOrderState(@PathVariable("id") UUID id, @RequestParam(name = "orderState") OrderState orderState) {
+    public ResponseEntity<?> updateOrderState(@PathVariable("id") UUID id, @RequestParam(name = "orderState") OrderState orderState) {
         Order order;
         try {
             order = orderService.updateOrderState(id, orderState);
         } catch (Exception e) {
-            log.warn("Failed to update order state: {}", e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            log.error("Error update order state: {}", e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         log.info("Updated order state: {}", order);
         return new ResponseEntity<>(orderMapper.entityToDto(order), HttpStatus.OK);
     }
 
     @PatchMapping("/{id}/pay")
-    public ResponseEntity<OrderDto> payOrder(@PathVariable("id") UUID id, @RequestParam(name = "amount") Double amount) {
+    public ResponseEntity<?> payOrder(@PathVariable("id") UUID id, @RequestParam(name = "amount") Double amount) {
         Order order;
         try {
             order = orderService.payOrder(id, amount);
         } catch (Exception e) {
-            log.warn("Failed to pay order: {}", e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            log.error("Error pay order: {}", e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         log.info("Payed order: {}", order);
         return new ResponseEntity<>(orderMapper.entityToDto(order), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<UUID> deleteOrder(@PathVariable("id") UUID id) {
+    public ResponseEntity<?> deleteOrder(@PathVariable("id") UUID id) {
         try {
             orderService.deleteOrder(id);
         } catch (Exception e) {
-            log.warn("Failed to delete order: {}", e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            log.error("Error delete order: {}", e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         log.info("Deleted order: {}", id);
         return new ResponseEntity<>(id, HttpStatus.OK);

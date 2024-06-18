@@ -11,6 +11,9 @@ import com.vr61v.model.request.CreateOrderRequest;
 import com.vr61v.model.request.UpdateOrderRequest;
 import com.vr61v.product.ProductClient;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -35,6 +38,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @PreAuthorize("hasRole(\"CUSTOMER\")")
     public Order createOrder(CreateOrderRequest createOrderRequest) {
         Order order = Order.builder()
                 .id(UUID.randomUUID())
@@ -60,16 +64,21 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @PostAuthorize("hasAnyRole(\"ADMIN\", \"COOK\") ||" +
+            "hasRole(\"CUSTOMER\") && returnObject.userId == authentication.principal.getAttribute(\"sub\")")
     public Order getOrder(UUID orderId) {
         return orderRepository.findById(orderId).orElse(null);
     }
 
     @Override
+    @PostFilter("hasAnyRole(\"ADMIN\", \"COOK\") ||" +
+            "hasRole(\"CUSTOMER\") && filterObject.userId == authentication.principal.getAttribute(\"sub\")")
     public List<Order> getOrders() {
         return orderRepository.findAll();
     }
 
     @Override
+    @PreAuthorize("hasAnyRole(\"ADMIN\")")
     public Order updateOrder(UUID orderId, UpdateOrderRequest updateOrderRequest) {
         Order order = orderRepository
                 .findById(orderId)
@@ -99,6 +108,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole(\"ADMIN\", \"CUSTOMER\", \"COOK\")")
     public Order updateOrderState(UUID orderId, OrderState state) throws IllegalOrderStateChangeException {
         Order order = orderRepository
                 .findById(orderId)
@@ -114,6 +124,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @PreAuthorize("hasRole(\"CUSTOMER\")")
     public Order payOrder(UUID orderId, Double amount) throws IllegalOrderStateChangeException, NotEnoughMoneyException {
         Order order = orderRepository
                 .findById(orderId)
@@ -138,6 +149,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @PreAuthorize("hasRole(\"ADMIN\")")
     public void deleteOrder(UUID orderId) {
         orderRepository.deleteById(orderId);
     }
