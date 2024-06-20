@@ -44,14 +44,14 @@ public class CardServiceImpl implements CardService {
 
     @Override
     @PostAuthorize("returnObject == null || " +
-            "hasRole(\"CUSTOMER\") && returnObject.userId.toString() == authentication.principal.getAttribute(\"sub\") || " +
+            "hasRole(\"CUSTOMER\") && returnObject.userId.toString() == authentication.principal.getClaims().get(\"sub\") || " +
             "hasRole(\"ADMIN\")")
     public Card getCardById(UUID cardId) {
         return cardRepository.findById(cardId).orElse(null);
     }
 
     @Override
-    @PostFilter("hasRole(\"CUSTOMER\") && filterObject.userId.toString() == authentication.principal.getAttribute(\"sub\") || " +
+    @PostFilter("hasRole(\"CUSTOMER\") && filterObject.userId.toString() == authentication.principal.getClaims().get(\"sub\") || " +
             "hasRole(\"ADMIN\")")
     public List<Card> getAllCards() {
         return cardRepository.findAll();

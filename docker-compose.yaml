@@ -1,0 +1,78 @@
+services:
+  card-database:
+    image: postgres:latest
+    container_name: card-database
+    environment:
+      - POSTGRES_USER=username
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - card-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  order-database:
+    image: mongo:latest
+    container_name: order-database
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=username
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - order-config:/data/configdb
+      - order-data:/data/db
+    ports:
+      - "27017:27017"
+    restart: unless-stopped
+
+  product-database:
+    image: mongo:latest
+    container_name: product-database
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=username
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - product-config:/data/configdb
+      - product-data:/data/db
+    ports:
+      - "27018:27017"
+    restart: unless-stopped
+
+  restaurant-database:
+    image: mongo:latest
+    container_name: restaurant-database
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=username
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - restaurant-config:/data/configdb
+      - restaurant-data:/data/db
+    ports:
+      - "27019:27017"
+    restart: unless-stopped
+
+  keycloak:
+    image: quay.io/keycloak/keycloak
+    container_name: keycloak
+    environment:
+      - KEYCLOAK_ADMIN=admin-keycloak
+      - KEYCLOAK_ADMIN_PASSWORD=password
+    volumes:
+      - keycloak:/opt/keycloak/data
+    command: 
+    - start-dev
+    ports:
+      - "8085:8080"
+
+volumes:
+  card-data:
+
+  order-config:
+  order-data:
+
+  product-config:
+  product-data:
+
+  restaurant-config:
+  restaurant-data:
+
+  keycloak:
