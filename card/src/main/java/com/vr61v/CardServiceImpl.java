@@ -10,7 +10,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -18,17 +17,6 @@ import java.util.UUID;
 public class CardServiceImpl implements CardService {
 
     private final CardRepository cardRepository;
-
-    private static boolean validateProductUpdate(Card card, UpdateCardRequest updateCardRequest) {
-        boolean result = true;
-
-        if (updateCardRequest.userId() != null) result &= !Objects.equals(card.getUserId(), updateCardRequest.userId());
-        if (updateCardRequest.number() != null) result &= !Objects.equals(card.getNumber(), updateCardRequest.number());
-        if (updateCardRequest.type() != null) result &= !Objects.equals(card.getType(), updateCardRequest.type());
-        if (updateCardRequest.discount() != null) result &= !Objects.equals(card.getDiscount(), updateCardRequest.discount());
-
-        return result;
-    }
 
     @Override
     @PreAuthorize("hasRole(\"ADMIN\")")
@@ -63,10 +51,6 @@ public class CardServiceImpl implements CardService {
         Card product = cardRepository
                 .findById(cardId)
                 .orElseThrow(IllegalArgumentException::new);
-
-        if (!validateProductUpdate(product, updateCardRequest)) {
-            throw new IllegalArgumentException("the updated fields must be different from the existing ones");
-        }
 
         if (updateCardRequest.userId() != null) product.setUserId(updateCardRequest.userId());
         if (updateCardRequest.number() != null) product.setNumber(updateCardRequest.number());
