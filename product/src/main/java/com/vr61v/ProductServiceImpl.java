@@ -8,7 +8,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -16,19 +15,6 @@ import java.util.UUID;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-
-    private static boolean validateProductUpdate(Product product, UpdateProductRequest updateProductRequest) {
-        boolean result = true;
-
-        if (updateProductRequest.name() != null) result &= !Objects.equals(product.getName(), updateProductRequest.name());
-        if (updateProductRequest.price() != null) result &= !Objects.equals(product.getPrice(), updateProductRequest.price());
-        if (updateProductRequest.weight() != null) result &= !Objects.equals(product.getWeight(), updateProductRequest.weight());
-        if (updateProductRequest.category() != null) result &= !Objects.equals(product.getCategory(), updateProductRequest.category());
-        if (updateProductRequest.description() != null) result &= !Objects.equals(product.getDescription(), updateProductRequest.description());
-        if (updateProductRequest.composition() != null) result &= !Objects.equals(product.getComposition(), updateProductRequest.composition());
-
-        return result;
-    }
 
     @Override
     @PreAuthorize("isAuthenticated() && hasRole(\"ADMIN\")")
@@ -68,16 +54,12 @@ public class ProductServiceImpl implements ProductService {
                 .findById(productId)
                 .orElseThrow(IllegalArgumentException::new);
 
-        if (!validateProductUpdate(product, updateProductRequest)) {
-            throw new IllegalArgumentException("the updated fields must be different from the existing ones");
-        }
-
         if (updateProductRequest.name() != null) product.setName(updateProductRequest.name());
         if (updateProductRequest.price() != null) product.setPrice(updateProductRequest.price());
         if (updateProductRequest.weight() != null) product.setWeight(updateProductRequest.weight());
         if (updateProductRequest.category() != null) product.setCategory(updateProductRequest.category());
-        if (updateProductRequest.description() != null) product.setDescription(updateProductRequest.description());
         if (updateProductRequest.composition() != null) product.setComposition(updateProductRequest.composition());
+        if (updateProductRequest.description() != null) product.setDescription(updateProductRequest.description());
 
         return productRepository.save(product);
     }

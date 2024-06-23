@@ -22,7 +22,7 @@ public class CardServiceImplTests {
     public void testCreateCard(CreateCardRequest request, CardRepository repository, Card expected) {
         CardService cardService = new CardServiceImpl(repository);
         Card card = cardService.createCard(request);
-        Assertions.assertEquals(expected.getId(), card.getId());
+        Assertions.assertEquals(expected, card);
     }
 
     @ParameterizedTest
@@ -43,13 +43,9 @@ public class CardServiceImplTests {
 
     @ParameterizedTest
     @ArgumentsSource(CardServiceImplTestsUpdateCardProvider.class)
-    public void testUpdateCard(UUID cardId, UpdateCardRequest request, CardRepository repository, Card expected, Exception exception) {
-        CardService cardService = new CardServiceImpl(repository);
-        if (exception != null) {
-            Assertions.assertThrows(exception.getClass(), () -> cardService.updateCard(cardId, request));
-            return;
-        }
-        Card actual = cardService.updateCard(cardId, request);
+    public void testUpdateCard(UUID productId, UpdateCardRequest request, CardRepository repository, Card expected) {
+        CardService service = new CardServiceImpl(repository);
+        Card actual = service.updateCard(productId, request);
         Assertions.assertEquals(expected, actual);
     }
 

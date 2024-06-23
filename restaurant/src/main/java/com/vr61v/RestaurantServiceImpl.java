@@ -8,7 +8,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -17,18 +16,6 @@ import java.util.UUID;
 public class RestaurantServiceImpl implements RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
-
-    private static boolean validateRestaurantUpdate(Restaurant restaurant, UpdateRestaurantRequest updateRestaurantRequest) {
-        boolean result = true;
-
-        if (updateRestaurantRequest.address() != null) result &= !Objects.equals(restaurant.getAddress(), updateRestaurantRequest.address());
-        if (updateRestaurantRequest.phone() != null) result &= !Objects.equals(restaurant.getPhone(), updateRestaurantRequest.phone());
-        if (updateRestaurantRequest.openingHoursFrom() != null) result &= !Objects.equals(restaurant.getOpeningHoursFrom(), updateRestaurantRequest.openingHoursFrom());
-        if (updateRestaurantRequest.openingHoursTo() != null) result &= !Objects.equals(restaurant.getOpeningHoursTo(), updateRestaurantRequest.openingHoursTo());
-        if (updateRestaurantRequest.menu() != null) result &= !Objects.equals(restaurant.getMenu(), updateRestaurantRequest.menu());
-
-        return result;
-    }
 
     @Override
     @PreAuthorize("isAuthenticated() && hasRole(\"ADMIN\")")
@@ -61,10 +48,6 @@ public class RestaurantServiceImpl implements RestaurantService {
         Restaurant restaurant = restaurantRepository
                 .findById(restaurantId)
                 .orElseThrow(IllegalArgumentException::new);
-
-        if (!validateRestaurantUpdate(restaurant, updateRestaurantRequest)) {
-            throw new IllegalArgumentException("the updated fields must be different from the existing ones");
-        }
 
         if (updateRestaurantRequest.address() != null) restaurant.setAddress(updateRestaurantRequest.address());
         if (updateRestaurantRequest.phone() != null) restaurant.setPhone(updateRestaurantRequest.phone());
