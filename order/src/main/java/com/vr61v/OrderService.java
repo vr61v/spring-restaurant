@@ -14,9 +14,9 @@ public interface OrderService {
 
     Order createOrder(CreateOrderRequest createOrderRequest);
 
-    Order getOrder(UUID orderId);
+    Order getOrderById(UUID orderId);
 
-    List<Order> getOrders();
+    List<Order> getAllOrders();
 
     Order updateOrder(UUID orderId, UpdateOrderRequest updateOrderRequest);
 

@@ -14,7 +14,7 @@ public record UpdateOrderRequest(
 
         String comment,
 
-        Map<UUID, Integer> products
+        Map<UUID, Integer> details
 
 ) {
 }

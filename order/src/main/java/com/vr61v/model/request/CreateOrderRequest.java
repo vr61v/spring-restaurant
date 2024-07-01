@@ -26,7 +26,7 @@ public record CreateOrderRequest(
         OrderState state,
 
         @NotNull @NotEmpty
-        Map<UUID, Integer> products
+        Map<UUID, Integer> details
 
 ) {
 

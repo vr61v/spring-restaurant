@@ -26,17 +26,6 @@ public class OrderServiceImpl implements OrderService {
     private final ProductClient productClient;
     private final ProductMapper productMapper;
 
-    private boolean validateOrderUpdate(Order order, UpdateOrderRequest updateOrderRequest) {
-        boolean result = true;
-
-        if (updateOrderRequest.userId() != null) result &= !Objects.equals(updateOrderRequest.userId(), order.getUserId());
-        if (updateOrderRequest.restaurantId() != null) result &= !Objects.equals(updateOrderRequest.restaurantId(), order.getRestaurantId());
-        if (updateOrderRequest.date() != null) result &= !Objects.equals(updateOrderRequest.date(), order.getDate());
-        if (updateOrderRequest.comment() != null) result &= !Objects.equals(updateOrderRequest.comment(), order.getComment());
-
-        return result;
-    }
-
     @Override
     @PreAuthorize("hasRole(\"CUSTOMER\")")
     public Order createOrder(CreateOrderRequest createOrderRequest) {
@@ -51,13 +40,13 @@ public class OrderServiceImpl implements OrderService {
                 .build();
 
 
-        Map<UUID, Integer> productsQuantity = createOrderRequest.products();
+        Map<UUID, Integer> details = createOrderRequest.details();
 
         List<Product> products = Objects.requireNonNull(
-                productClient.getProductsById(productsQuantity.keySet().stream().toList()).getBody())
+                productClient.getProductsById(details.keySet().stream().toList()).getBody())
                 .stream().map(productMapper::dtoToEntity).toList();
         for (Product product : products) {
-            order.addDetail(new Detail(product, productsQuantity.get(product.getId())));
+            order.addDetail(new Detail(product, details.get(product.getId())));
         }
 
         return orderRepository.save(order);
@@ -66,14 +55,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @PostAuthorize("hasAnyRole(\"ADMIN\", \"COOK\") ||" +
             "hasRole(\"CUSTOMER\") && returnObject.userId == authentication.principal.getAttribute(\"sub\")")
-    public Order getOrder(UUID orderId) {
+    public Order getOrderById(UUID orderId) {
         return orderRepository.findById(orderId).orElse(null);
     }
 
     @Override
     @PostFilter("hasAnyRole(\"ADMIN\", \"COOK\") ||" +
             "hasRole(\"CUSTOMER\") && filterObject.userId == authentication.principal.getAttribute(\"sub\")")
-    public List<Order> getOrders() {
+    public List<Order> getAllOrders() {
         return orderRepository.findAll();
     }
 
@@ -84,23 +73,21 @@ public class OrderServiceImpl implements OrderService {
                 .findById(orderId)
                 .orElseThrow(IllegalArgumentException::new);
 
-        if (!validateOrderUpdate(order, updateOrderRequest)) {
-            throw new IllegalArgumentException("the updated fields must be different from the existing ones");
-        }
-
         if (updateOrderRequest.userId() != null) order.setUserId(updateOrderRequest.userId());
         if (updateOrderRequest.restaurantId() != null) order.setRestaurantId(updateOrderRequest.restaurantId());
         if (updateOrderRequest.date() != null) order.setDate(updateOrderRequest.date());
         if (updateOrderRequest.comment() != null) order.setComment(updateOrderRequest.comment());
 
-        if (updateOrderRequest.products() != null) {
-            Map<UUID, Integer> productsQuantity = updateOrderRequest.products();
+        if (updateOrderRequest.details() != null) {
+            Map<UUID, Integer> details = updateOrderRequest.details();
 
             List<Product> products = Objects.requireNonNull(
-                    productClient.getProductsById(productsQuantity.keySet().stream().toList()).getBody())
+                    productClient.getProductsById(details.keySet().stream().toList()).getBody())
                     .stream().map(productMapper::dtoToEntity).toList();
+
+            order.getDetails().clear();
             for (Product product : products) {
-                order.addDetail(new Detail(product, productsQuantity.get(product.getId())));
+                order.addDetail(new Detail(product, details.get(product.getId())));
             }
         }
 
@@ -108,13 +95,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @PreAuthorize("hasAnyRole(\"ADMIN\", \"CUSTOMER\", \"COOK\")")
+    @PreAuthorize("hasAnyRole(\"ADMIN\", \"COOK\")")
     public Order updateOrderState(UUID orderId, OrderState state) throws IllegalOrderStateChangeException {
         Order order = orderRepository
                 .findById(orderId)
                 .orElseThrow(IllegalArgumentException::new);
 
-        if (order.getState().compareTo(state) >= 0) {
+        if (order.getState().compareTo(state) > 0) {
             throw new IllegalOrderStateChangeException("the order status cannot be changed");
         }
 

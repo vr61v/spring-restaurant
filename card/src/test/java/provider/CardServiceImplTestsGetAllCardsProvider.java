@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 public class CardServiceImplTestsGetAllCardsProvider implements ArgumentsProvider {
 
     @Override
-    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
+    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) {
         final String number = "1234123412341234";
         final Float discount = 0.5f;
 

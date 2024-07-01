@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 
 public class ProductServiceImplTestsGetAllProductsProvider implements ArgumentsProvider {
     @Override
-    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
+    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) {
         String name = "product name";
         Double price = 100.0d;
         Double weight = 100.0d;

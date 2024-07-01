@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 
 public class RestaurantServiceImplTestsGetRestaurantByIdProvider implements ArgumentsProvider {
     @Override
-    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
+    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) {
         UUID id = UUID.randomUUID();
         String address = "restaurant address";
         String phone = "+79052779090";
@@ -29,7 +29,7 @@ public class RestaurantServiceImplTestsGetRestaurantByIdProvider implements Argu
         when(repository.findById(id)).thenReturn(Optional.of(restaurant));
 
         List<Arguments> arguments = new ArrayList<>();
-        arguments.add(Arguments.of(id, repository, restaurant)); // success find then return found card
+        arguments.add(Arguments.of(id, repository, restaurant)); // success find then return found product
         arguments.add(Arguments.of(UUID.randomUUID(), repository, null)); // error find then return null
 
         return arguments.stream();

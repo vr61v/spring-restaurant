@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 
 public class RestaurantServiceImplTestsGetAllRestaurantsProvider implements ArgumentsProvider {
     @Override
-    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
+    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) {
         String address = "restaurant address";
         String phone = "+79052779090";
         LocalTime openingHoursFrom = LocalTime.of(10, 0);

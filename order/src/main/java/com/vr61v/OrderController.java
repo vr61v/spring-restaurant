@@ -41,7 +41,7 @@ public class OrderController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getOrderById(@PathVariable("id") UUID id) {
-        Order order = orderService.getOrder(id);
+        Order order = orderService.getOrderById(id);
         log.info("Retrieved order: {}", order);
         if (order == null) return new ResponseEntity<>("The order with id:" + id + " was not found", HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(orderMapper.entityToDto(order), HttpStatus.OK);
@@ -49,7 +49,7 @@ public class OrderController {
 
     @GetMapping
     public ResponseEntity<List<OrderDto>> getOrders() {
-        List<Order> orders = orderService.getOrders();
+        List<Order> orders = orderService.getAllOrders();
         log.info("Retrieved orders: {}", orders);
         return new ResponseEntity<>(
                 orders.stream()

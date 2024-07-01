@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 public class CardServiceImplTestsGetCardByIdProvider implements ArgumentsProvider {
 
     @Override
-    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
+    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) {
         final UUID cardId = UUID.randomUUID();
         final UUID userId = UUID.randomUUID();
         final String number = "1234123412341234";
