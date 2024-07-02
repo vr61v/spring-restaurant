@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2024-06-07T11:56:39.317Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/23.1.5 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="2H645TzueySp20h7A9_2" version="23.1.5" type="device">
+<mxfile host="Electron" modified="2024-07-02T16:28:00.131Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/23.1.5 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="z1dOl4zM4EwmnaEZtYFM" version="23.1.5" type="device">
   <diagram id="PHb2eGyyGbvwx4oAQFKI" name="microservises">
-    <mxGraphModel dx="1085" dy="683" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1200" math="0" shadow="0">
+    <mxGraphModel dx="1038" dy="653" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1200" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -19,30 +19,30 @@
             <mxPoint x="660" y="180" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="B0PGhKgbakV6-kQyAMOY-11" value="&lt;h1&gt;Микросервис пользователей&lt;/h1&gt;&lt;p&gt;Микросервис пользователей предоставляет api для управления системой, соответствуя возможностям, которые предоставлены их ролью.&lt;/p&gt;&lt;h2&gt;Не авторизированный пользователь:&lt;/h2&gt;&lt;p&gt;1. Не авторизированный пользователь имеет право просматривать информацию о ресторанах, продуктах, а так же создавать нового заказчика.&lt;/p&gt;&lt;h2&gt;Заказчик - Customer:&lt;/h2&gt;&lt;p&gt;1. Заказчик может получить, обновить, удалить данные только о себе.&lt;/p&gt;&lt;p&gt;2. Заказчик может получить или удалить скидочные карты, принадлежащие только ему.&lt;/p&gt;&lt;p&gt;3. Заказчик может создать новый заказ, получить один заказ по id или получить все заказы, которые ему принадлежат, оплатить заказ или его отменить.&lt;/p&gt;&lt;h2&gt;Повар - Cook:&lt;/h2&gt;&lt;p&gt;1. Повар может изменять состояния заказов и получать заказы, которые принадлежат его ресторану и имеют статус оплачен, готовится или готов. В случае отсутствия продуктов повар может отменить заказ.&lt;/p&gt;&lt;h2&gt;Администратор - Admin:&lt;/h2&gt;&lt;p&gt;1. Администратор может совершать CRUD операции для ресторанов и продуктов, а также скидочных карт заказчиков&lt;/p&gt;&lt;p&gt;2. Администратор может изменять данные о заказе в случае ошибки заказчика.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;" style="text;html=1;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="40" y="40" width="530" height="510" as="geometry" />
+        <mxCell id="B0PGhKgbakV6-kQyAMOY-11" value="&lt;h1&gt;Пользователи:&lt;/h1&gt;&lt;p&gt;- Пользователь - не аутентифицированный в системе человек&lt;br&gt;- Заказчик - пользователь с ролью CUSTOMER&lt;br&gt;- Администратор - пользователь с ролью ADMIN&lt;br&gt;- Повар - пользователь с ролью COOK&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;" style="text;html=1;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="40" y="40" width="400" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="B0PGhKgbakV6-kQyAMOY-14" value="&lt;h1&gt;Микросервис карт&lt;/h1&gt;&lt;div&gt;Микросервис карт отвечает за управление картами в системе. К нему имеет доступ только заказчик и администратор. Микросервисное взаимодействие пользователей реализовано через очередь сообщений. Пользователь отсылает запрос с CRUD операцией для данных и микросервис проверяет валидность запроса, после чего отдает ответ.&lt;/div&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;" style="text;html=1;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="600" y="40" width="360" height="170" as="geometry" />
+        <mxCell id="B0PGhKgbakV6-kQyAMOY-14" value="&lt;h1&gt;Микросервис карт&lt;/h1&gt;&lt;div&gt;&lt;div&gt;Микросервис карт отвечает за управление картами в системе. К нему имеет доступ только заказчик и администратор. У заказчика есть права на получение или удаление своих карт по их id или номеру, ко всем остальным возможностям сервиса имеет доступ только администратор. Для создания карты необходимо указать id пользователя, к которому будет привязана эта карта, номер - строка, состоящая из 16 цифр, тип карты и скидку (число от 0 до 1), которую предлагает данная карта. Для обновления карты можно не указывать некоторые поля, в таком случае они останутся нетронутыми.&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="40" y="160" width="560" height="160" as="geometry" />
         </mxCell>
         <mxCell id="B0PGhKgbakV6-kQyAMOY-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="580.0588235294117" y="799.9999999999998" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="B0PGhKgbakV6-kQyAMOY-23" value="&lt;h1&gt;Микросервис заказов&lt;/h1&gt;&lt;div&gt;Микросервис заказов отвечает за управление данными о заказах в системе. К нему имеет доступ любой пользователь. Взаимодействие с ним реализовано так же через очередь сообщений. Сервис заказов обязан проверять валидность оплаты и изменение состояния заказа, причем пользователи имеют свои полномочия на изменение состояние заказа в соответствии с их ролью. Например: после начала приготовления заказа заказчик не имеет права его отменить, а повар не имеет права взяться за заказ до его оплаты. Каждому пользователю, который обращается предоставляется возможность получить заказы, но с ограничениями: заказчик получает только свои, повар получает только те, что находятся в состоянии оплачено, готовки и готовые, а админ может получить любой заказ.&lt;/div&gt;" style="text;html=1;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="1320" y="40" width="360" height="270" as="geometry" />
+        <mxCell id="B0PGhKgbakV6-kQyAMOY-23" value="&lt;h1&gt;Микросервис заказов&lt;/h1&gt;&lt;div&gt;Микросервис заказов отвечает за управление заказами в системе. К нему имеет доступ любой авторизированный пользователь, но у каждого есть ограничения. Заказчик имеет право на создание, получение, и оплату своих заказов. Администратор может выполнять любую CRUD операцию. Повар имеет право получить заказы и изменить их статус. При некорректном состоянии заказа или нехватки средств для оплаты будет возвращено соответствующее исключение.&lt;br&gt;&lt;/div&gt;" style="text;html=1;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="600" y="160" width="560" height="160" as="geometry" />
         </mxCell>
         <mxCell id="B0PGhKgbakV6-kQyAMOY-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="580.0588235294117" y="1000" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="B0PGhKgbakV6-kQyAMOY-37" value="&lt;h1&gt;Микросервис ресторанов&lt;/h1&gt;&lt;div&gt;Микросервис ресторанов предоставляет api для управления данными о ресторанах. Каждому пользователю дается уровень управления данными в соответствии с его ролью. Полный доступ имеет только администратор, все остальные имеют право только на получение данных.&lt;/div&gt;" style="text;html=1;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="960" y="40" width="360" height="140" as="geometry" />
+        <mxCell id="B0PGhKgbakV6-kQyAMOY-37" value="&lt;h1&gt;Микросервис ресторанов&lt;/h1&gt;&lt;div&gt;Микросервис ресторанов предоставляет api для управления данными о ресторанах. У пользователей есть полный доступ к получению любого ресторана, но для изменения данных нужно обладать ADMIN ролью. В запросах на создание/обновление ресторана проверяется валидность введенных данных (название не может быть пустым, номер телефона должен быть введён корректно а все другие поля не могут быть null).&lt;/div&gt;" style="text;html=1;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="600" y="40" width="560" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="B0PGhKgbakV6-kQyAMOY-38" value="&lt;h1&gt;Микросервис продуктов&lt;/h1&gt;&lt;div&gt;Микросервис продуктов предоставляет api для управления данными о продуктах. Каждому пользователю дается уровень управления данными в соответствии с его ролью. Полный доступ имеет только администратор, все остальные имеют право только на получение данных.&lt;/div&gt;" style="text;html=1;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="960" y="210" width="360" height="140" as="geometry" />
+        <mxCell id="B0PGhKgbakV6-kQyAMOY-38" value="&lt;h1&gt;Микросервис продуктов&lt;/h1&gt;&lt;div&gt;Микросервис продуктов предоставляет api для управления данными о продуктах. У пользователей есть полный доступ к получению любого продукта, но для изменения данных нужно обладать ADMIN ролью. В запросах на создание/обновление продуктов проверяется валидность введенных данных (название не может быть пустым, а цена и вес не может быть меньше 0). В случае обновления некоторые поля могут быть не указаны, в таком случае они останутся нетронутыми.&lt;/div&gt;" style="text;html=1;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="40" y="320" width="560" height="160" as="geometry" />
         </mxCell>
         <mxCell id="w0uS0H19VgwwP3KNhR0U-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="hqSXu8GDfhMuMuZGrUjH-1" target="hqSXu8GDfhMuMuZGrUjH-4" edge="1">
           <mxGeometry relative="1" as="geometry" />
@@ -107,7 +107,7 @@
         <mxCell id="hqSXu8GDfhMuMuZGrUjH-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="hqSXu8GDfhMuMuZGrUjH-11" target="hqSXu8GDfhMuMuZGrUjH-12" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="mWuXqvYvHXpTy9erS2ml-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="hqSXu8GDfhMuMuZGrUjH-11" target="hqSXu8GDfhMuMuZGrUjH-9">
+        <mxCell id="mWuXqvYvHXpTy9erS2ml-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="hqSXu8GDfhMuMuZGrUjH-11" target="hqSXu8GDfhMuMuZGrUjH-9" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="hqSXu8GDfhMuMuZGrUjH-11" value="order microservice" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
