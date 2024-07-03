@@ -39,6 +39,14 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    @PostAuthorize("returnObject == null || " +
+            "hasRole(\"CUSTOMER\") && returnObject.userId.toString() == authentication.principal.getClaims().get(\"sub\") || " +
+            "hasRole(\"ADMIN\")")
+    public Card getCardByNumber(String number) {
+        return cardRepository.findByNumber(number).orElse(null);
+    }
+
+    @Override
     @PostFilter("hasRole(\"CUSTOMER\") && filterObject.userId.toString() == authentication.principal.getClaims().get(\"sub\") || " +
             "hasRole(\"ADMIN\")")
     public List<Card> getAllCards() {
@@ -62,7 +70,13 @@ public class CardServiceImpl implements CardService {
 
     @Override
     @PreAuthorize("hasAnyRole(\"CUSTOMER\", \"ADMIN\")")
-    public void deleteCard(UUID cardId) {
+    public void deleteCardById(UUID cardId) {
         cardRepository.deleteById(cardId);
+    }
+
+    @Override
+    @PreAuthorize("hasAnyRole(\"CUSTOMER\", \"ADMIN\")")
+    public void deleteCardByNumber(String number) {
+        cardRepository.deleteByNumber(number);
     }
 }

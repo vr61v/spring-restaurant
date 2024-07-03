@@ -13,10 +13,14 @@ public interface CardService {
 
     Card getCardById(UUID cardId);
 
+    Card getCardByNumber(String number);
+
     List<Card> getAllCards();
 
     Card updateCard(UUID cardId, UpdateCardRequest updateCardRequest);
 
-    void deleteCard(UUID cardId);
+    void deleteCardById(UUID cardId);
+
+    void deleteCardByNumber(String number);
 
 }

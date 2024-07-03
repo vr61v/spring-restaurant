@@ -30,7 +30,7 @@ public class CardController {
         Card card;
         try {
             card = cardService.createCard(createCardRequest);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException | NullPointerException e) {
             log.error("Error create card: {}", e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -38,11 +38,19 @@ public class CardController {
         return new ResponseEntity<>(cardMapper.entityToDto(card), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getCard(@PathVariable("id") UUID id) {
-        Card card = cardService.getCardById(id);
+    @GetMapping("/")
+    public ResponseEntity<?> getCard(@RequestParam(required = false) UUID id, @RequestParam(required = false) String number) {
+        Card card = null;
+        if (id != null) card = cardService.getCardById(id);
+        else if (number != null) card = cardService.getCardByNumber(number);
         log.info("Retrieved card: {}", card);
-        if (card == null) return new ResponseEntity<>("The card with id:" + id + " was not found", HttpStatus.BAD_REQUEST);
+        if (card == null) {
+            StringBuilder message = new StringBuilder();
+            if (id != null) message.append("The card with id:").append(id).append(" was not found");
+            else if (number != null) message.append("The card with number:").append(number).append(" was not found");
+            else message.append("Id or number must not be null");
+            return new ResponseEntity<>(message.toString(), HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(cardMapper.entityToDto(card), HttpStatus.OK);
     }
 
@@ -65,7 +73,7 @@ public class CardController {
         Card card;
         try {
             card = cardService.updateCard(id, updateCardRequest);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | NullPointerException e) {
             log.error("Error update card: {}", e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -73,11 +81,13 @@ public class CardController {
         return new ResponseEntity<>(cardMapper.entityToDto(card), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCard(@PathVariable("id") UUID id) {
+    @DeleteMapping("/")
+    public ResponseEntity<?> deleteCard(@RequestParam(required = false) UUID id, @RequestParam(required = false) String number) {
         try {
-            cardService.deleteCard(id);
-        } catch (IllegalArgumentException e) {
+            if (id != null) cardService.deleteCardById(id);
+            else if (number != null) cardService.deleteCardByNumber(number);
+            else throw new IllegalArgumentException("Id or number must not be null");
+        } catch (IllegalArgumentException | NullPointerException e) {
             log.error("Error delete card: {}", e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
