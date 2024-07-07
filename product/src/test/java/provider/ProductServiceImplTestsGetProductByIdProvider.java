@@ -1,7 +1,7 @@
 package provider;
 
-import com.vr61v.ProductRepository;
-import com.vr61v.model.Product;
+import com.vr61v.productmicroservice.ProductRepository;
+import com.vr61v.productmicroservice.model.Product;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;

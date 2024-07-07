@@ -1,10 +1,10 @@
 package provider;
 
-import com.vr61v.OrderRepository;
-import com.vr61v.model.order.Order;
-import com.vr61v.model.order.OrderState;
-import com.vr61v.model.product.Detail;
-import com.vr61v.model.product.Product;
+import com.vr61v.ordermicroservice.OrderRepository;
+import com.vr61v.ordermicroservice.model.order.Order;
+import com.vr61v.ordermicroservice.model.order.OrderState;
+import com.vr61v.ordermicroservice.model.product.Detail;
+import com.vr61v.ordermicroservice.model.product.Product;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;

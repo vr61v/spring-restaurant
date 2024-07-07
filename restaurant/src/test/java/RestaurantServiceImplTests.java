@@ -1,9 +1,9 @@
-import com.vr61v.RestaurantRepository;
-import com.vr61v.RestaurantService;
-import com.vr61v.RestaurantServiceImpl;
-import com.vr61v.model.Restaurant;
-import com.vr61v.model.request.CreateRestaurantRequest;
-import com.vr61v.model.request.UpdateRestaurantRequest;
+import com.vr61v.restaurantmicroservice.RestaurantRepository;
+import com.vr61v.restaurantmicroservice.RestaurantService;
+import com.vr61v.restaurantmicroservice.RestaurantServiceImpl;
+import com.vr61v.restaurantmicroservice.model.Restaurant;
+import com.vr61v.restaurantmicroservice.model.request.CreateRestaurantRequest;
+import com.vr61v.restaurantmicroservice.model.request.UpdateRestaurantRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -21,7 +21,6 @@
         <module>restaurant</module>
         <module>product</module>
         <module>order</module>
-        <module>clients</module>
     </modules>
 
     <properties>
@@ -43,6 +42,12 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>1.5.5.Final</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
 
 

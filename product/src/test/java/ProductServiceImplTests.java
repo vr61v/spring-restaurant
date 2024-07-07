@@ -1,9 +1,9 @@
-import com.vr61v.ProductRepository;
-import com.vr61v.ProductService;
-import com.vr61v.ProductServiceImpl;
-import com.vr61v.model.Product;
-import com.vr61v.model.request.CreateProductRequest;
-import com.vr61v.model.request.UpdateProductRequest;
+import com.vr61v.productmicroservice.ProductRepository;
+import com.vr61v.productmicroservice.ProductService;
+import com.vr61v.productmicroservice.ProductServiceImpl;
+import com.vr61v.productmicroservice.model.Product;
+import com.vr61v.productmicroservice.model.request.CreateProductRequest;
+import com.vr61v.productmicroservice.model.request.UpdateProductRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

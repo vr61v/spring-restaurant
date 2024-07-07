@@ -1,9 +1,9 @@
 package provider;
 
-import com.vr61v.CardRepository;
-import com.vr61v.model.Card;
-import com.vr61v.model.CardType;
-import com.vr61v.model.request.UpdateCardRequest;
+import com.vr61v.cardmicroservice.CardRepository;
+import com.vr61v.cardmicroservice.model.Card;
+import com.vr61v.cardmicroservice.model.CardType;
+import com.vr61v.cardmicroservice.model.request.UpdateCardRequest;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;

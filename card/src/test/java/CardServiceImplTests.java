@@ -1,9 +1,9 @@
-import com.vr61v.CardRepository;
-import com.vr61v.CardService;
-import com.vr61v.CardServiceImpl;
-import com.vr61v.model.Card;
-import com.vr61v.model.request.CreateCardRequest;
-import com.vr61v.model.request.UpdateCardRequest;
+import com.vr61v.cardmicroservice.CardRepository;
+import com.vr61v.cardmicroservice.CardService;
+import com.vr61v.cardmicroservice.CardServiceImpl;
+import com.vr61v.cardmicroservice.model.Card;
+import com.vr61v.cardmicroservice.model.request.CreateCardRequest;
+import com.vr61v.cardmicroservice.model.request.UpdateCardRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;

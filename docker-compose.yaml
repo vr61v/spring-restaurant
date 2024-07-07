@@ -1,14 +1,15 @@
 services:
   card-database:
-    image: postgres:latest
+    image: mongo:latest
     container_name: card-database
     environment:
-      - POSTGRES_USER=username
-      - POSTGRES_PASSWORD=password
+      - MONGO_INITDB_ROOT_USERNAME=username
+      - MONGO_INITDB_ROOT_PASSWORD=password
     volumes:
-      - card-data:/var/lib/postgresql/data
+      - card-config:/data/configdb
+      - card-data:/data/db
     ports:
-      - "5432:5432"
+      - "27016:27017"
     restart: unless-stopped
 
   order-database:
@@ -64,6 +65,7 @@ services:
       - "8085:8080"
 
 volumes:
+  card-config:
   card-data:
 
   order-config:

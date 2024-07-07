@@ -1,7 +1,7 @@
 package provider;
 
-import com.vr61v.RestaurantRepository;
-import com.vr61v.model.Restaurant;
+import com.vr61v.restaurantmicroservice.RestaurantRepository;
+import com.vr61v.restaurantmicroservice.model.Restaurant;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
