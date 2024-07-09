@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="restaurant" uuid="2be1c71a-945f-4c49-ba1a-39e2d35786a7">
+    <data-source source="LOCAL" name="order" uuid="1074f601-1a84-4dc4-8c42-a8acee3c865f">
       <driver-ref>mongo</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
       <jdbc-driver>com.dbschema.MongoJdbcDriver</jdbc-driver>
-      <jdbc-url>mongodb://localhost:27018</jdbc-url>
+      <jdbc-url>mongodb://localhost:27017/</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
@@ -14,12 +14,12 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="product" uuid="21e05b37-6fee-4562-b399-16c4a840b633">
+    <data-source source="LOCAL" name="product" uuid="634d698f-d7d3-4125-8e1c-2716efb336bb">
       <driver-ref>mongo</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
       <jdbc-driver>com.dbschema.MongoJdbcDriver</jdbc-driver>
-      <jdbc-url>mongodb://localhost:27017</jdbc-url>
+      <jdbc-url>mongodb://localhost:27018/</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
@@ -27,12 +27,12 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="order" uuid="0f6ea378-eac1-4152-b38b-152d91c63021">
+    <data-source source="LOCAL" name="restaurant" uuid="40a8dd5e-783c-4fab-88a9-62f34e3a7e7b">
       <driver-ref>mongo</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
       <jdbc-driver>com.dbschema.MongoJdbcDriver</jdbc-driver>
-      <jdbc-url>mongodb://localhost:27019</jdbc-url>
+      <jdbc-url>mongodb://localhost:27019/</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
@@ -40,12 +40,12 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="card" uuid="24bb7e40-80f9-4a94-8708-b3e3a12da642">
-      <driver-ref>postgresql</driver-ref>
+    <data-source source="LOCAL" name="card" uuid="1bb77b68-e202-4352-9a1e-2910f80043b6">
+      <driver-ref>mongo</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5433/</jdbc-url>
+      <jdbc-driver>com.dbschema.MongoJdbcDriver</jdbc-driver>
+      <jdbc-url>mongodb://localhost:27016</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />

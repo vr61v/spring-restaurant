@@ -1,7 +1,9 @@
 package com.vr61v.ordermicroservice;
 
-import com.vr61v.ordermicroservice.client.CardClient;
 import com.vr61v.cardmicroservice.model.CardDto;
+import com.vr61v.cardmicroservice.model.CardType;
+import com.vr61v.ordermicroservice.client.CardClient;
+import com.vr61v.ordermicroservice.client.ProductClient;
 import com.vr61v.ordermicroservice.exceptions.IllegalOrderStateChangeException;
 import com.vr61v.ordermicroservice.exceptions.NotEnoughMoneyException;
 import com.vr61v.ordermicroservice.model.card.CardMapper;
@@ -11,7 +13,6 @@ import com.vr61v.ordermicroservice.model.product.Detail;
 import com.vr61v.ordermicroservice.model.product.ProductMapper;
 import com.vr61v.ordermicroservice.model.request.CreateOrderRequest;
 import com.vr61v.ordermicroservice.model.request.UpdateOrderRequest;
-import com.vr61v.ordermicroservice.client.ProductClient;
 import com.vr61v.productmicroservice.model.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,18 @@ public class OrderServiceImpl implements OrderService {
     private final CardClient cardClient;
     private final CardMapper cardMapper;
 
+    private CardDto cardResponseToEntity(HashMap response) {
+        CardDto card = new CardDto();
+
+        if (response.get("id") != null) card.setId(UUID.fromString((String) response.get("id")));
+        if (response.get("userId") != null) card.setUserId(UUID.fromString((String) response.get("userId")));
+        if (response.get("number") != null) card.setNumber((String) response.get("number"));
+        if (response.get("type") != null) card.setType(CardType.valueOf((String) response.get("type")));
+        if (response.get("discount") != null) card.setDiscount(((Double) response.get("discount")).floatValue());
+
+        return card;
+    }
+
     @Override
     @PreAuthorize("hasRole(\"CUSTOMER\")")
     public Order createOrder(CreateOrderRequest createOrderRequest) {
@@ -47,18 +60,23 @@ public class OrderServiceImpl implements OrderService {
 
 
         Map<UUID, Integer> details = createOrderRequest.details();
-        List<Product> products = Objects.requireNonNull(
-                productClient.getProductsById(details.keySet().stream().toList()).getBody())
+        List<Product> products =
+                Objects.requireNonNull(
+                        productClient
+                                .getProductsById(details.keySet().stream().toList())
+                                .getBody())
                 .stream().map(productMapper::dtoToEntity).toList();
+
         for (Product product : products) {
             order.addDetail(new Detail(product, details.get(product.getId())));
         }
 
-        ResponseEntity<?> card = cardClient.getCard(null, createOrderRequest.cardNumber());
-        if (card.getStatusCode().is2xxSuccessful()) {
-            order.setCard(cardMapper.dtoToEntity((CardDto) card.getBody()));
+        ResponseEntity<?> cardResponse = cardClient.getCard(null, createOrderRequest.cardNumber());
+        if (cardResponse.getStatusCode().is2xxSuccessful()) {
+            CardDto cardDto = cardResponseToEntity((HashMap) Objects.requireNonNull(cardResponse.getBody()));
+            order.setCard(cardMapper.dtoToEntity(cardDto));
         } else {
-            throw new IllegalArgumentException((String) card.getBody());
+            throw new IllegalArgumentException(String.valueOf(cardResponse.getBody()));
         }
 
         return orderRepository.save(order);
@@ -89,17 +107,27 @@ public class OrderServiceImpl implements OrderService {
         if (updateOrderRequest.restaurantId() != null) order.setRestaurantId(updateOrderRequest.restaurantId());
         if (updateOrderRequest.date() != null) order.setDate(updateOrderRequest.date());
         if (updateOrderRequest.comment() != null) order.setComment(updateOrderRequest.comment());
-
         if (updateOrderRequest.details() != null) {
             Map<UUID, Integer> details = updateOrderRequest.details();
-
-            List<Product> products = Objects.requireNonNull(
-                    productClient.getProductsById(details.keySet().stream().toList()).getBody())
+            List<Product> products =
+                    Objects.requireNonNull(
+                            productClient
+                                    .getProductsById(details.keySet().stream().toList())
+                                    .getBody())
                     .stream().map(productMapper::dtoToEntity).toList();
 
             order.getDetails().clear();
             for (Product product : products) {
                 order.addDetail(new Detail(product, details.get(product.getId())));
+            }
+        }
+        if (updateOrderRequest.cardNumber() != null) {
+            ResponseEntity<?> cardResponse = cardClient.getCard(null, updateOrderRequest.cardNumber());
+            if (cardResponse.getStatusCode().is2xxSuccessful()) {
+                CardDto cardDto = cardResponseToEntity((HashMap) Objects.requireNonNull(cardResponse.getBody()));
+                order.setCard(cardMapper.dtoToEntity(cardDto));
+            } else {
+                throw new IllegalArgumentException(String.valueOf(cardResponse.getBody()));
             }
         }
 
