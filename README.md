@@ -1,9 +1,9 @@
 # Spring restaurant
 
 ## Используемые технологии
-* Spring framework (web, security, data, openfeign)
-* PostgreSQL, MongoDB
-* Oauth2
+* Spring framework (web, security, data, cloud)
+* MongoDB
+* Keycloak, Oauth2
 * Junit
 
 ## Роли в микросервисах
